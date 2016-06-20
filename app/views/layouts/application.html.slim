@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title AnyCable Demo
+    = Gon::Base.render_data
+    = stylesheet_link_tag 'application', media: 'all'
+    = csrf_meta_tags
+  body
+    .navbar-fixed
+      nav
+        .nav-wrapper.light-blue
+          .nav-left
+            == humanoids
+            = link_to 'AnyCable', root_path, class: 'brand-logo'
+          .nav-right
+            - if logged_in?
+              span.username ="@#{current_user}"
+              = image_tag Faker::Avatar.image(current_user, "50x50")
+    .container.main
+      = yield
+
+    .footer
+      = Gon::Base.render_data
+      = javascript_include_tag 'application'
+      = yield :scripts

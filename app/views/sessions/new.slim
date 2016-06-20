@@ -1,0 +1,10 @@
+h2 Log in
+
+= form_for(@session_form, url: login_path) do |f|
+  .row
+    .col.input-field.s12
+      = f.text_field :username, autofocus: true, class: 'validate'
+      = f.label :username
+  .row
+    .col.s12
+      = f.submit "Log in", class: 'waves-effect waves-light btn'

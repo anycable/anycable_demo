@@ -1,0 +1,47 @@
+//= require material_icons
+
+@import "materialize"
+
+body
+  background: white
+
+.no-events
+  pointer-events: none
+
+.ellipses
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+.nav-wrapper
+  display: flex
+  justify-content: space-between
+  padding: 0 5%
+
+.nav-left, .nav-right
+  display: flex
+  align-items: center
+
+
+.humanoids
+  height: 50px
+  display: flex
+  > div
+    width: 50px
+
+
+.baskets-list
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  align-items: stretch
+
+.basket
+  display: flex
+  width: 240px
+  .card-image
+    width: 100%
+  .card-content
+    height: 120px
+    overflow: hidden
+    text-overflow: ellipsis

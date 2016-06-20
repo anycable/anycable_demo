@@ -1,0 +1,15 @@
+#basket_form style="display: none;"
+  = form_for @basket, remote: true do |f|
+    .row
+      .input-field.col.s12
+        =f.text_field :name
+        =f.label :name
+    .row
+      .input-field.col.s12
+        =f.label :description
+        =f.text_area :description, class: 'materialize-textarea'
+    .row
+      .col
+        =f.submit "Save", class: 'waves-effect waves-light btn'
+      .col
+        .btn.cancel-btn.grey.waves-effect.waves-light.lighten-4.black-text Cancel
