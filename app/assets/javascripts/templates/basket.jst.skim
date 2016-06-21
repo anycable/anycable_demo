@@ -1,4 +1,4 @@
-.basket
+.basket id="basket_#{@id}"
   .col.s12.m7
     .card
       a href="/baskets/#{@id}"

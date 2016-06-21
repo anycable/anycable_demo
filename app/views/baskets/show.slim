@@ -7,3 +7,6 @@
 
 = render 'shared/add_btn', id: "add_product_btn"
 = render 'products/form'
+
+= content_for :scripts
+  = javascript_include_tag 'products'

@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   resources :baskets, only: [:index, :show, :create, :update, :destroy] do
     resources :products, only: [:create, :update, :destroy], shallow: true
   end
+
+  mount ActionCable.server => "/cable"
 end

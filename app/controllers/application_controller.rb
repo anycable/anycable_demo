@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :require_login
+  after_action :broadcast_changes, only: [:create, :destroy]
 
   helper_method :current_user
   helper_method :logged_in?
@@ -18,9 +19,26 @@ class ApplicationController < ActionController::Base
     current_user.present?
   end
 
+  def broadcast_changes
+    return if resource.errors.any?
+    ActionCable.server.broadcast channel_name, channel_message
+  end
+
   protected
 
   def require_login
     redirect_to(login_path) unless logged_in?
+  end
+
+  def channel_name
+    controller_name
+  end
+
+  def channel_message
+    { type: action_name, data: resource.as_json }
+  end
+
+  def resource
+    @resource ||= instance_variable_get("@#{controller_name.singularize}")
   end
 end

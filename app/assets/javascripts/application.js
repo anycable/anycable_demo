@@ -12,9 +12,16 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require action_cable
 //= require materialize-sprockets
-//= require_tree .
+//= require_tree ./shared
+//= require_tree ./channels
+//= require_tree ./templates
 
 $(document).ready(function() {
   $('select').material_select();
 });
+
+window.after = function(time, fn) {
+  return setTimeout(fn, time);
+}

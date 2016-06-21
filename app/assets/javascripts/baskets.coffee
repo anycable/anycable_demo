@@ -3,6 +3,18 @@ $ ->
   addBusketBtn = $("#add_basket_btn")
   basketsList = $("#baskets_list")
 
+  basketsChannel = App.cable.subscriptions.create 'BasketsChannel', BasketsChannel
+
+  basketsChannel.handle_message = (type, data) ->
+    if type is 'destroy'
+      $("#basket_#{data.id}").remove()
+    else if type is 'create'
+      addBasket(data)
+
+  addBasket = (data) ->
+    return if $("#basket_#{data.id}")[0]
+    basketsList.append App.utils.render('basket', data)    
+
   addBusketBtn.on 'click', (e) ->
     e.preventDefault()
     basketForm.show()
@@ -12,7 +24,7 @@ $ ->
 
   basketForm.on 'ajax:success', (e, data, status, xhr) ->
     App.utils.successMessage(data?.message)
-    basketsList.append App.utils.render('basket', data.basket)
+    addBasket(data.basket)
     basketForm.hide()
 
   basketForm.on 'ajax:error', App.utils.ajaxErrorHandler

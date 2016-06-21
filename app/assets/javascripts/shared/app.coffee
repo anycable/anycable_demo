@@ -1,5 +1,7 @@
 App = window.App = {}
 
+App.cable = ActionCable.createConsumer()
+
 App.utils = 
   successMessage: (message) ->
     return unless message

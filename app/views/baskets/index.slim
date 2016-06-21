@@ -9,3 +9,6 @@ h3 Baskets
 
 = render 'shared/add_btn', id: "add_basket_btn"
 = render 'form'
+
+= content_for :scripts
+  = javascript_include_tag 'baskets'
