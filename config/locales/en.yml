@@ -27,3 +27,10 @@ en:
       message: "Your basket has been successfully removed"
     update:
       message: "Your basket has been successfully updated"
+  products:
+    create:
+      message: "Your product has been successfully created"
+    destroy:
+      message: "Your product has been successfully removed"
+    update:
+      message: "Your product has been successfully updated"

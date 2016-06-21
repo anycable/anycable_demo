@@ -1,11 +1,13 @@
 .basket
   .col.s12.m7
     .card
-      .card-image
-        img src=@logo_path
-        span.card-title =@name
+      a href="/baskets/#{@id}"
+        .card-image
+          img src=@logo_path
+          span.card-title =@name
       .card-content 
         p =@description
       .card-action
         / a.edit-basket-link href="#" Edit
         a.delete-basket-link data-remote="true" rel="nofollow" data-method="delete" href="/baskets/#{@id}" Delete
+        span.badge =@items_count

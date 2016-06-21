@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :items
   root to: 'baskets#index'
 
   get '/login' => 'sessions#new', as: :login
@@ -6,5 +7,7 @@ Rails.application.routes.draw do
 
   get '/logout' => 'sessions#destroy', as: :logout
 
-  resources :baskets, only: [:index, :show, :create, :update, :destroy]
+  resources :baskets, only: [:index, :show, :create, :update, :destroy] do
+    resources :products, only: [:create, :update, :destroy], shallow: true
+  end
 end

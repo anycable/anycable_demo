@@ -1,6 +1,8 @@
 class Basket < ApplicationRecord
   before_create :set_defaults
 
+  has_many :products, dependent: :destroy
+
   private
 
   def set_defaults

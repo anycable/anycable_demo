@@ -7,3 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 3.times { Basket.create! }
+
+baskets = Basket.all
+
+3.times { baskets.first.products.create }
+2.times { baskets.second.products.create }
+4.times { baskets.last.products.create }

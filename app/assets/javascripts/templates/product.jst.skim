@@ -1,0 +1,7 @@
+.collection-item id="product_#{@id}"
+  .product-content
+    img src=@icon_path
+    span.title =@name
+    a.delete-product-link.grey-text.lighten-5-text data-remote="true" rel="nofollow" data-method="delete" href="/products/#{@id}"
+      i.material-icons delete
+    span.secondary-content =@category

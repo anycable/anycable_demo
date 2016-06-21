@@ -1,24 +1,32 @@
 class BasketsController < ApplicationController
+  before_action :set_basket, only: [:show, :destroy, :update]
+
   def index
     @baskets = Basket.all
-    @basket = Basket.new
+  end
+
+  def show
+    @products = @basket.products
   end
 
   def create
-    @basket = Basket.new(basket_params.merge(owner: current_user))
-    @basket.save
-    render_json @basket
+    basket = Basket.create(basket_params.merge(owner: current_user))
+    render_json basket
   end
 
   def destroy
-    @basket = Basket.find(params[:id])
     @basket.destroy!
-    render_json @basket
+    render_json_message
   end
 
   private
 
   def basket_params
     params.require(:basket).permit(:name, :logo_path, :description)
+  end
+
+
+  def set_basket
+    @basket = Basket.find(params[:id])
   end
 end

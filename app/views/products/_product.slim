@@ -1,0 +1,7 @@
+.collection-item id=dom_id(product)
+  .product-content
+    img src=product.icon_path
+    span.title =product.name
+    a.delete-product-link.grey-text.lighten-5-text data-remote="true" rel="nofollow" data-method="delete" href=product_path(product)
+      i.material-icons delete
+    span.secondary-content =product.category
