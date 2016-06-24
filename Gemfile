@@ -21,6 +21,8 @@ gem 'gon'
 
 gem 'redis', '~> 3.0'
 
+gem 'rack-cors'
+
 # Other
 gem 'nenv'
 

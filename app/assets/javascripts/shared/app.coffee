@@ -1,6 +1,6 @@
 App = window.App = {}
 
-App.cable = ActionCable.createConsumer()
+App.cable = ActionCable.createConsumer('ws://192.168.60.101:28080/') #('ws://localhost:8080/cable')
 
 App.utils = 
   successMessage: (message) ->

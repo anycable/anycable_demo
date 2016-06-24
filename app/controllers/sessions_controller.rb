@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]
+  skip_after_action :broadcast_changes
 
   def new
     @session_form = SessionForm.new(username: Faker::Internet.user_name)
