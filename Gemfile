@@ -26,6 +26,8 @@ gem 'rack-cors'
 # Other
 gem 'nenv'
 
+gem 'grpc', require: false
+
 gem 'tzinfo'
 gem 'tzinfo-data'
 

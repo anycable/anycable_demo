@@ -13,7 +13,11 @@ import (
 	"net/http"
     "encoding/json"
 
+    pb "./protos"
+
 	"github.com/gorilla/websocket"
+    "golang.org/x/net/context"
+    "google.golang.org/grpc"
 )
 
 const (
@@ -81,6 +85,12 @@ func (h *Hub) run() {
         }
     }
 }
+
+type Remote struct {
+    client pb.ConnectorClient
+}
+
+var rpc = Remote {}
 
 var addr = flag.String("addr", "0.0.0.0:8080", "http service address")
 
@@ -163,11 +173,24 @@ func cablePingMessage() []byte {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
+    response, err := rpc.client.Connect(context.Background(), &pb.ConnectionRequest{Path: "/cable", Headers: make(map[string]string)})
+    
+    if err != nil {
+        log.Println("RPC Error: %v", err)
+        return
+    }
+
+    if response.Status != 1 {
+        log.Println("Auth Failed")
+        return
+    }
+
     ws, err := upgrader.Upgrade(w, r, nil)
     if err != nil {
         log.Println(err)
         return
     }
+
     conn := &Conn{send: make(chan []byte, 256), ws: ws}
     hub.register <- conn
     go conn.writePump()
@@ -178,6 +201,14 @@ func main() {
 	flag.Parse()
 	log.SetFlags(0)
     go hub.run()
+
+    conn, err := grpc.Dial("0.0.0.0:50051", grpc.WithInsecure())
+    if err != nil {
+        log.Fatalf("did not connect: %v", err)
+    }
+    defer conn.Close()
+    rpc.client = pb.NewConnectorClient(conn)
+
     log.Printf("Running websocket server on %s", *addr)
 	http.HandleFunc("/cable", serveWs)
 	log.Fatal(http.ListenAndServe(*addr, nil))
