@@ -1,35 +1,56 @@
-module AnycableRefinements
-  refine ActionCable::Connection::Base do
-    attr_reader :transmissions
+require 'action_cable'
 
-    def initialize
-      @coder = ActiveSupport::JSON
-      @transmissions = []
-    end
+module ActionCable
+  module Connection
+    class Base # :nodoc:
+      attr_reader :transmissions
 
-    def handle_open
-      connect if respond_to?(:connect)
-      send_welcome_message
-    rescue ActionCable::Connection::Authorization::UnauthorizedError
-      close
-    end
+      def initialize(env: {})
+        @env = env
+        @coder = ActiveSupport::JSON
+        @transmissions = []
+      end
 
-    def handle_close
-      # subscriptions.unsubscribe_from_all
-      disconnect if respond_to?(:disconnect)
-    end
+      def handle_open
+        connect if respond_to?(:connect)
+        send_welcome_message
+      rescue ActionCable::Connection::Authorization::UnauthorizedError
+        close
+      end
 
-    def close
-      @closed = true
-    end
+      def handle_close
+        # subscriptions.unsubscribe_from_all
+        disconnect if respond_to?(:disconnect)
+      end
 
-    def transmit(cable_message)
-      transmissions << encode(cable_message)
-    end
+      def close
+        @closed = true
+      end
 
-    def dispose
-      @closed = false
-      transmissions.clear
+      def closed?
+        @closed
+      end
+
+      def transmit(cable_message)
+        transmissions << encode(cable_message)
+      end
+
+      def dispose
+        @closed = false
+        transmissions.clear
+      end
+
+      def identifiers_hash
+        identifiers.each_with_object({}) do |id, acc|
+          obj = instance_variable_get("@#{id}")
+          next unless obj
+          acc[id] = obj.try(:to_gid_param) || obj
+        end
+      end
+
+      def logger
+        ::Rails.logger
+      end
     end
   end
 end

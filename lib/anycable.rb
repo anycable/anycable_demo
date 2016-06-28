@@ -2,15 +2,26 @@ module Anycable # :nodoc:
   require_relative './anycable/rpc'
   require_relative './anycable/rpc_services'
 
-  require_relative './anycable/actioncable/connection'
-
   class RpcHandler < Anycable::RPC::Service
     def connect(request, _unused_call)
       Rails.logger.debug("RPC Request: #{request};\n#{_unused_call}")
-      Anycable::ConnectionResponse.new(
-        status: Anycable::Status::SUCCESS,
-        identifiers: { user_id: Time.now.to_i }.to_json
-      )
+
+      connection = ApplicationCable::Connection.new(env:
+        {
+          'HTTP_COOKIE' => request.headers['Cookie'],
+          'ORIGINAL_FULLPATH' => request.path
+        })
+
+      connection.handle_open
+
+      if connection.closed?
+        Anycable::ConnectionResponse.new(status: Anycable::Status::ERROR)
+      else
+        Anycable::ConnectionResponse.new(
+          status: Anycable::Status::SUCCESS,
+          identifiers: connection.identifiers_hash.to_json
+        )
+      end
     end
 
     def subscribe(message, _unused_call)

@@ -114,15 +114,16 @@ func (c *Conn) writePump() {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
-    res, identifiers := rpc.VerifyConnection(r)
-
-    if !res { 
-        return
-    }
-
     ws, err := upgrader.Upgrade(w, r, nil)
     if err != nil {
         log.Println(err)
+        return
+    }
+
+    res, identifiers := rpc.VerifyConnection(r)
+
+    if !res {
+        ws.Close()
         return
     }
 
