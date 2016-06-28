@@ -58,7 +58,7 @@ func (c *Conn) readPump() {
 
         if err != nil {
             if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-                log.Printf("error: %v", err)
+                log.Printf("read error: %v", err)
             }
             break
         }
@@ -68,7 +68,6 @@ func (c *Conn) readPump() {
         if err := json.Unmarshal(message, &msg); err != nil {
             log.Printf("Unknown message: %s", message)
         }else{
-
             switch msg.Command {
                 case "subscribe":
                     app.Subscribe(c, msg)
@@ -140,8 +139,7 @@ func main() {
 	log.SetFlags(0)
     go hub.run()
 
-    pinger := &Pinger{interval: pingPeriod}
-    go pinger.run()
+    app.Pinger = &Pinger{interval: pingPeriod, cmd: make(chan string)}
 
     rpc.Init(*rpchost)
     defer rpc.Close()

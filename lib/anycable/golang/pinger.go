@@ -3,22 +3,34 @@ package main
 import (
   "time"
   "encoding/json"
+  "log"
 )
 
 type Pinger struct {
   interval time.Duration
+  ticker *time.Ticker
+  cmd chan string
 }
 
 func (p *Pinger) run() {
-  ticker := time.NewTicker(p.interval)
-  defer ticker.Stop()
+  p.ticker = time.NewTicker(p.interval)
+  defer p.ticker.Stop()
 
+  loop:
   for {
     select {
-      case <-ticker.C:
+      case <-p.ticker.C:
         app.BroadcastAll(cablePingMessage())
+      case <-p.cmd:
+        log.Printf("Ping paused")
+        break loop
       }
     }
+}
+
+func (p *Pinger) pause() {
+  log.Printf("Pause ping")
+  p.cmd <- "stop"
 }
 
 // Conn is an middleman between the websocket connection and the hub.

@@ -6,6 +6,7 @@ import (
 )
 
 type App struct {
+  Pinger *Pinger
 }
 
 const (
@@ -16,9 +17,9 @@ const (
 )
 
 type Message struct {
-    Command string `json:"command"`
-    Identifier string `json:"identifier"`
-    Data string `json:"data"`
+  Command string `json:"command"`
+  Identifier string `json:"identifier"`
+  Data string `json:"data"`
 }
 
 type Reply struct {
@@ -38,8 +39,11 @@ func (r *Reply) toJSON() []byte {
 var app = &App{}
 
 func (app *App) Connected(conn *Conn) {
-    hub.register <- conn
-    conn.send <- (&Reply{Type: WELCOME}).toJSON()
+  if hub.Size() == 0 {
+    go app.Pinger.run()
+  }
+  hub.register <- conn
+  conn.send <- (&Reply{Type: WELCOME}).toJSON()
 }
 
 func (app *App) Subscribe(conn *Conn, msg *Message) {
@@ -64,15 +68,17 @@ func (app *App) Subscribe(conn *Conn, msg *Message) {
 }
 
 func (app *App) Unsubscribe(conn *Conn, msg *Message) {
-
 }
 
 func (app *App) Disconnected(conn *Conn) {
-    hub.unregister <- conn
+  if hub.Size() == 1 {
+    app.Pinger.pause()
+  }
+  hub.unregister <- conn
 }
 
 func (app *App) BroadcastAll(message []byte) {
-    hub.broadcast <- message
+  hub.broadcast <- message
 }
 
 

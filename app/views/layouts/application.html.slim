@@ -4,6 +4,7 @@ html
     title AnyCable Demo
     = Gon::Base.render_data
     = stylesheet_link_tag 'application', media: 'all'
+    = action_cable_meta_tag
     = csrf_meta_tags
   body
     .navbar-fixed

@@ -11,5 +11,5 @@ Rails.application.routes.draw do
     resources :products, only: [:create, :update, :destroy], shallow: true
   end
 
-  mount ActionCable.server => "/cable"
+  mount(ActionCable.server => "/cable") unless Nenv.cable_url?
 end

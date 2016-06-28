@@ -71,3 +71,7 @@ func (h *Hub) run() {
         }
     }
 }
+
+func (h *Hub) Size() int {
+    return len(h.connections)
+}
