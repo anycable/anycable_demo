@@ -15,6 +15,12 @@ html
             = link_to 'AnyCable', root_path, class: 'brand-logo'
           .nav-right
             - if logged_in?
+              .switch.online-switch
+                label.white-text
+                  | Off
+                  input type="checkbox" checked=true
+                  span.lever
+                  | On
               span.username ="@#{current_user}"
               = image_tag Faker::Avatar.image(current_user, "50x50")
     .container.main

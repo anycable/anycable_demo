@@ -5,10 +5,13 @@ module ActionCable
     class Base # :nodoc:
       attr_reader :transmissions
 
-      def initialize(env: {})
+      def initialize(env: {}, identifiers_json: '{}')
+        @ids = ActiveSupport::JSON.decode(identifiers_json)
         @env = env
         @coder = ActiveSupport::JSON
+        @closed = false
         @transmissions = []
+        @subscriptions = ActionCable::Connection::Subscriptions.new(self)
       end
 
       def handle_open

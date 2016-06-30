@@ -3,6 +3,8 @@ package main
 import (
   "log"
   "encoding/json"
+
+  pb "./protos"
 )
 
 type App struct {
@@ -10,9 +12,6 @@ type App struct {
 }
 
 const (
-  CONFIRMATION = "confirm_subscription"
-  REJECTION = "reject_subscription"
-  WELCOME = "welcome"
   PING = "ping"
 )
 
@@ -38,12 +37,13 @@ func (r *Reply) toJSON() []byte {
   
 var app = &App{}
 
-func (app *App) Connected(conn *Conn) {
+func (app *App) Connected(conn *Conn, transmissions []string) {
   if hub.Size() == 0 {
     go app.Pinger.run()
   }
   hub.register <- conn
-  conn.send <- (&Reply{Type: WELCOME}).toJSON()
+
+  Transmit(conn, transmissions)
 }
 
 func (app *App) Subscribe(conn *Conn, msg *Message) {
@@ -54,31 +54,79 @@ func (app *App) Subscribe(conn *Conn, msg *Message) {
 
   res := rpc.Subscribe(conn.identifiers, msg.Identifier)
 
-  if res.Disconnect {
-    defer conn.ws.Close()
+  if res.Status == 1 {
+    conn.subscriptions[msg.Identifier] = true
   }
 
-  if res.Status != 1 {
-    conn.send <- (&Reply{Type: REJECTION, Identifier: msg.Identifier}).toJSON()
-    return
-  }
-
-  conn.subscriptions[msg.Identifier] = true
-  conn.send <- (&Reply{Type: CONFIRMATION, Identifier: msg.Identifier}).toJSON()
+  HandleReply(conn, res)
 }
 
 func (app *App) Unsubscribe(conn *Conn, msg *Message) {
+  if _, ok := conn.subscriptions[msg.Identifier]; !ok {
+    log.Printf("Unknown subscription %s", msg.Identifier)
+    return
+  }
+
+  res := rpc.Unsubscribe(conn.identifiers, msg.Identifier)
+
+  if res.Status == 1 {
+    delete(conn.subscriptions, msg.Identifier)
+  }
+
+  HandleReply(conn, res) 
+}
+
+func (app *App) Perform(conn *Conn, msg *Message) {
+  if _, ok := conn.subscriptions[msg.Identifier]; !ok {
+    log.Printf("Unknown subscription %s", msg.Identifier)
+    return
+  }
+
+  res := rpc.Perform(conn.identifiers, msg.Identifier, msg.Data)
+
+  HandleReply(conn, res) 
 }
 
 func (app *App) Disconnected(conn *Conn) {
   if hub.Size() == 1 {
     app.Pinger.pause()
   }
+
   hub.unregister <- conn
+
+  rpc.Disconnect(conn.identifiers, SubscriptionsList(conn.subscriptions))
 }
 
 func (app *App) BroadcastAll(message []byte) {
   hub.broadcast <- message
 }
 
+func Transmit(conn *Conn, transmissions []string) {
+  for _, msg := range transmissions {
+    conn.send <- []byte(msg)
+  }
+}
 
+func HandleReply(conn *Conn, reply *pb.CommandResponse) {
+  if reply.Disconnect {
+    defer conn.ws.Close()
+  }
+
+  if reply.StopStreams {
+    hub.unsubscribe <- conn
+  }
+
+  if reply.StreamFrom {
+    hub.subscribe <- &SubscriptionInfo{conn: conn, stream: reply.StreamId}
+  }
+
+  Transmit(conn, reply.Transmissions)
+}
+
+func SubscriptionsList(subs map[string]bool) []string {
+  keys := []string{}
+  for k := range subs {
+    keys = append(keys, k)
+  }
+  return keys
+}

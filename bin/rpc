@@ -4,6 +4,7 @@ require 'anycable'
 require ::File.expand_path('../../config/environment',  __FILE__)
 
 require 'anycable/actioncable/connection'
+require 'anycable/actioncable/channel'
 require 'grpc'
 
 $stdout.puts 'Loading Rails ...'

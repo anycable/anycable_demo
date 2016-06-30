@@ -2,7 +2,7 @@
 # Source: rpc.proto for package 'anycable'
 
 require 'grpc'
-require_relative './rpc'
+require_relative 'rpc'
 
 module Anycable
   module RPC
@@ -20,6 +20,7 @@ module Anycable
       rpc :Subscribe, CommandMessage, CommandResponse
       rpc :Unsubscribe, CommandMessage, CommandResponse
       rpc :Perform, CommandMessage, CommandResponse
+      rpc :Disconnect, DisconnectRequest, DisconnectResponse
     end
 
     Stub = Service.rpc_stub_class

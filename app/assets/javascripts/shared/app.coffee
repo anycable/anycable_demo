@@ -1,6 +1,20 @@
 App = window.App = {}
 
-App.cable = ActionCable.createConsumer()
+connected = true
+
+App.connect = ->
+  return if connected
+  App.cable.connection.monitor.reconnectAttempts = 2 
+  App.cable.connection.monitor.start()
+  connected = true
+
+App.disconnect = ->
+  return unless connected
+  App.cable.connection.monitor.stop()
+  # to make sure that it won't try to reconnect
+  App.cable.connection.monitor.reconnectAttempts = 2 
+  App.cable.connection.close()
+  connected = false
 
 App.utils = 
   successMessage: (message) ->
@@ -30,3 +44,13 @@ App.utils =
 $ ->
   App.utils.successMessage(App.flash?.success)
   App.utils.errorMessage(App.flash?.error)
+
+  $('.online-switch input[type=checkbox]').on 'change', (e) ->
+    if @checked
+      App.connect()
+    else
+      App.disconnect()
+
+
+  App.cable = ActionCable.createConsumer()
+

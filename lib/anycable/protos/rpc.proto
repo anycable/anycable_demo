@@ -7,6 +7,7 @@ service RPC {
   rpc Subscribe (CommandMessage) returns (CommandResponse) {}
   rpc Unsubscribe (CommandMessage) returns (CommandResponse) {}
   rpc Perform (CommandMessage) returns (CommandResponse) {}
+  rpc Disconnect (DisconnectRequest) returns (DisconnectResponse) {}
 }
 
 enum Status {
@@ -22,6 +23,7 @@ message ConnectionRequest {
 message ConnectionResponse {
   Status status = 1;
   string identifiers = 2;
+  repeated string transmissions = 3;
 }
 
 message CommandMessage {
@@ -37,4 +39,14 @@ message CommandResponse {
   bool stop_streams = 3;
   bool stream_from = 4;
   string stream_id = 5;
+  repeated string transmissions = 6;
+}
+
+message DisconnectRequest {
+  string identifiers = 1;
+  repeated string subscriptions = 2;
+}
+
+message DisconnectResponse {
+  Status status = 1;
 }

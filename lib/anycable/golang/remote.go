@@ -34,24 +34,48 @@ func (rpc *Remote) Close() {
   rpc.conn.Close()
 }
 
-func (rpc *Remote) VerifyConnection(r *http.Request) (bool, string) {
+func (rpc *Remote) VerifyConnection(r *http.Request) *pb.ConnectionResponse {
   response, err := rpc.client.Connect(context.Background(), &pb.ConnectionRequest{Path: r.URL.String(), Headers: GetHeaders(r)})
     
   if err != nil {
       log.Println("RPC Error: %v", err)
-      return false, ""
   }
 
-  if response.Status != 1 {
-      log.Println("Auth Failed")
-      return false, ""
-  }
-
-  return true, response.Identifiers
+  return response
 }
 
 func (rpc *Remote) Subscribe(connId string, channelId string) *pb.CommandResponse {
   response, err := rpc.client.Subscribe(context.Background(), &pb.CommandMessage{Command: "subscribe", Identifier: channelId, ConnectionIdentifiers: connId})
+    
+  if err != nil {
+      log.Println("RPC Error: %v", err)
+  }
+
+  return response
+}
+
+func (rpc *Remote) Unsubscribe(connId string, channelId string) *pb.CommandResponse {
+  response, err := rpc.client.Unsubscribe(context.Background(), &pb.CommandMessage{Command: "unsubscribe", Identifier: channelId, ConnectionIdentifiers: connId})
+    
+  if err != nil {
+      log.Println("RPC Error: %v", err)
+  }
+
+  return response
+}
+
+func (rpc *Remote) Perform(connId string, channelId string, data string) *pb.CommandResponse {
+  response, err := rpc.client.Perform(context.Background(), &pb.CommandMessage{Command: "message", Identifier: channelId, ConnectionIdentifiers: connId, Data: data})
+    
+  if err != nil {
+      log.Println("RPC Error: %v", err)
+  }
+
+  return response
+}
+
+func (rpc *Remote) Disconnect(connId string, subscriptions []string) *pb.DisconnectResponse {
+  response, err := rpc.client.Disconnect(context.Background(), &pb.DisconnectRequest{Identifiers: connId, Subscriptions: subscriptions})
     
   if err != nil {
       log.Println("RPC Error: %v", err)

@@ -73,6 +73,8 @@ func (c *Conn) readPump() {
                     app.Subscribe(c, msg)
                 case "unsubscribe":
                     app.Unsubscribe(c, msg)
+                case "message":
+                    app.Perform(c, msg)
                 default:
                     log.Printf("Unknown command: %s", msg.Command)
             }            
@@ -120,17 +122,18 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    res, identifiers := rpc.VerifyConnection(r)
+    response := rpc.VerifyConnection(r)
 
-    if !res {
+    if response.Status != 1 {
+        log.Println("Auth Failed")
         ws.Close()
         return
     }
 
-    log.Printf("Connection identifiers: %s", identifiers)
+    log.Printf("Connection identifiers: %s", response.Identifiers)
 
-    conn := &Conn{send: make(chan []byte, 256), ws: ws, identifiers: identifiers, subscriptions: make(map[string]bool)}
-    app.Connected(conn)
+    conn := &Conn{send: make(chan []byte, 256), ws: ws, identifiers: response.Identifiers, subscriptions: make(map[string]bool)}
+    app.Connected(conn, response.Transmissions)
     go conn.writePump()
     conn.readPump()
 }
