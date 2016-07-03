@@ -6,10 +6,7 @@ require_relative 'rpc'
 
 module Anycable
   module RPC
-
-    # TODO: add proto service documentation here
     class Service
-
       include GRPC::GenericService
 
       self.marshal_class_method = :encode

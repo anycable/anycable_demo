@@ -50,6 +50,7 @@ var upgrader = websocket.Upgrader{
 // readPump pumps messages from the websocket connection to the hub.
 func (c *Conn) readPump() {
     defer func() {
+        log.Printf("Disconnect on read error")
         app.Disconnected(c)
         c.ws.Close()
     }()
@@ -147,6 +148,9 @@ func main() {
 
     rpc.Init(*rpchost)
     defer rpc.Close()
+
+    app.Subscriber = &Subscriber{host: "redis://localhost:6379/5", channel: "anycable"}
+    go app.Subscriber.run()
 
     log.Printf("Running websocket server on %s", *addr)
 	http.HandleFunc("/cable", serveWs)

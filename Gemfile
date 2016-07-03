@@ -18,6 +18,7 @@ gem 'materialize-sass'
 gem 'material_icons'
 gem 'skim'
 gem 'gon'
+gem 'anyway_config'
 
 gem 'redis', '~> 3.0'
 

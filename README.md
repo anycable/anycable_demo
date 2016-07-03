@@ -1,24 +1,53 @@
-# README
+# AnyCable Demo
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Sample application demonstrating AnyCable concept.
 
-Things you may want to cover:
+AnyCable allows you to use any WebSocket server (written in any language) as a replacement for built-in Ruby ActionCable server.
 
-* Ruby version
+With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) all that you can do with ActionCable. You can even use ActionCable in development and not be afraid of compatibility issues.
 
-* System dependencies
+## Requirements
 
-* Configuration
+We use Websockets server written in Go. You need Go environment to run the application.
 
-* Database creation
+Run:
 
-* Database initialization
+```sh
+make deps-go
+```
 
-* How to run the test suite
+to install Go packages.
 
-* Services (job queues, cache servers, search engines, etc.)
+Other requirements:
+- Ruby ~> 2.3
+- PostgreSQL >= 9.4
+- Redis
+- [hivemind](https://github.com/DarthSim/hivemind) (optional)
 
-* Deployment instructions
 
-* ...
+## Usage
+
+To launch AnyCable version:
+
+```sh
+# Run dev server
+hivemind
+
+# Run specs
+make test
+```
+
+This runs 3 processes:
+- Rails Web app
+- Rails RPC server ([GRPC](http://www.grpc.io))
+- Go Websockets server
+
+To launch _plain_ Rails version:
+
+```sh
+# Run dev server
+rails server
+
+# Run specs
+rspec
+```

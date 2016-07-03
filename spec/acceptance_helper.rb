@@ -5,6 +5,8 @@ require 'capybara/poltergeist'
 require "rack_session_access/capybara"
 require "puma"
 
+require "bg_helper" if Nenv.cable_url?
+
 RSpec.configure do |config|
   include ActionView::RecordIdentifier
   config.include AcceptanceHelper, type: :feature
@@ -34,8 +36,6 @@ RSpec.configure do |config|
   RSpec::PageRegression.configure do |c|
     c.threshold = 0.01
   end
-
-  config.before(:each, type: :feature) { Capybara.app_host = "http://dev.#{Capybara.server_host}.xip.io" }
 
   config.append_after(:each) { Capybara.reset_sessions! }
 end

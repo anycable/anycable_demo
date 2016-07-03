@@ -1,23 +1,9 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'anycable'
+require 'anycable/server'
+
 require ::File.expand_path('../../config/environment',  __FILE__)
-
-require 'anycable/actioncable/connection'
-require 'anycable/actioncable/channel'
-require 'grpc'
-
-$stdout.puts 'Loading Rails ...'
 Rails.application.eager_load!
-$stdout.puts 'Rails is loaded!'
 
-RPC_HOST = Nenv.rpc_host || 'localhost:50051'
-
-GRPC::DefaultLogger::LOGGER = Logger.new(STDOUT)
-Rails.logger = Logger.new(STDOUT)
-
-s = GRPC::RpcServer.new
-s.add_http2_port(RPC_HOST, :this_port_is_insecure)
-s.handle(Anycable::RpcHandler)
-$stdout.puts "RPC server is listening on #{RPC_HOST}"
-s.run_till_terminated
+Anycable.logger = Logger.new(STDOUT)
+Anycable::Server.start

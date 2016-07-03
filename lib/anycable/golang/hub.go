@@ -2,16 +2,19 @@ package main
 
 import (
   "log"
+
+  "encoding/json"
 )
 
 type SubscriptionInfo struct {
   conn *Conn
   stream string
+  identifier string
 }
 
 type StreamMessage struct {
-  stream string
-  data []byte
+  Stream string `json:"stream"`
+  Data string `json:"data"`
 }
 
 type Hub struct {
@@ -41,6 +44,9 @@ type Hub struct {
 
   // Maps connections to streams
   connection_streams map[*Conn][]string
+
+  // Maps streams to channels
+  stream_channel map[string]string
 }
 
 var hub = Hub{
@@ -53,6 +59,7 @@ var hub = Hub{
   connections: make(map[*Conn]bool),
   streams: make(map[string]map[*Conn]bool),
   connection_streams: make(map[*Conn][]string),
+  stream_channel: make(map[string]string),
 }
 
 func (h *Hub) run() {
@@ -63,7 +70,10 @@ func (h *Hub) run() {
         h.connections[conn] = true
 
       case conn := <-h.unregister:
-        log.Printf("Unregister connection %v", conn)  
+        log.Printf("Unregister connection %v", conn) 
+        
+        h.UnsubscribeConnection(conn)
+
         if _, ok := h.connections[conn]; ok {
           delete(h.connections, conn)
           close(conn.send)
@@ -81,16 +91,24 @@ func (h *Hub) run() {
         }
 
       case stream_message := <- h.stream_broadcast:
-        log.Printf("Broadcast to stream %s: %s", stream_message.stream, stream_message.data)
+        log.Printf("Broadcast to stream %s: %s", stream_message.Stream, stream_message.Data)
 
-        if _, ok := h.streams[stream_message.stream]; !ok {
-          log.Printf("No connections for stream %s", stream_message.stream)
+        if _, ok := h.streams[stream_message.Stream]; !ok {
+          log.Printf("No connections for stream %s", stream_message.Stream)
           return
         }
 
-        for conn := range h.streams[stream_message.stream] {
+        identifier := h.stream_channel[stream_message.Stream]
+        
+        var msg map[string]interface{}
+
+        json.Unmarshal([]byte(stream_message.Data), &msg)
+
+        bdata := (&Reply{Identifier: identifier, Message: msg}).toJSON()
+
+        for conn := range h.streams[stream_message.Stream] {
           select {
-            case conn.send <- stream_message.data:
+            case conn.send <- bdata:
             default:
               close(conn.send)
               delete(hub.connections, conn)
@@ -104,23 +122,35 @@ func (h *Hub) run() {
           h.streams[subinfo.stream] = make(map[*Conn]bool)
         }
         
+        h.stream_channel[subinfo.stream] = subinfo.identifier
+
         h.streams[subinfo.stream][subinfo.conn] = true
+
         h.connection_streams[subinfo.conn] = append(
           h.connection_streams[subinfo.conn],
           subinfo.stream)
 
       case conn := <- h.unsubscribe:
-        log.Printf("Unsubscribe from all streams %s", conn.identifiers)
-
-        for _, stream := range h.connection_streams[conn] {
-          delete(h.streams[stream], conn)
-        }
-
-        delete(h.connection_streams, conn)
+        h.UnsubscribeConnection(conn)
     }
   }
 }
 
 func (h *Hub) Size() int {
   return len(h.connections)
+}
+
+func (h *Hub) UnsubscribeConnection(conn *Conn) {
+  log.Printf("Unsubscribe from all streams %s", conn.identifiers)
+
+  for _, stream := range h.connection_streams[conn] {
+    delete(h.streams[stream], conn)
+
+    if len(h.streams[stream]) == 0 {
+      delete(h.streams, stream)
+      delete(h.stream_channel, stream)
+    }
+  }
+
+  delete(h.connection_streams, conn)
 }

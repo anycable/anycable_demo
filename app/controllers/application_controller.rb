@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def channel_message
-    { type: action_name, data: resource.as_json }
+    { type: action_name, data: resource.serialized(adapter: :attributes).as_json }
   end
 
   def resource

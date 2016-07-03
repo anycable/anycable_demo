@@ -9,6 +9,7 @@ import (
 
 type App struct {
   Pinger *Pinger
+  Subscriber *Subscriber
 }
 
 const (
@@ -58,7 +59,7 @@ func (app *App) Subscribe(conn *Conn, msg *Message) {
     conn.subscriptions[msg.Identifier] = true
   }
 
-  HandleReply(conn, res)
+  HandleReply(conn, msg, res)
 }
 
 func (app *App) Unsubscribe(conn *Conn, msg *Message) {
@@ -73,7 +74,7 @@ func (app *App) Unsubscribe(conn *Conn, msg *Message) {
     delete(conn.subscriptions, msg.Identifier)
   }
 
-  HandleReply(conn, res) 
+  HandleReply(conn, msg, res) 
 }
 
 func (app *App) Perform(conn *Conn, msg *Message) {
@@ -84,7 +85,7 @@ func (app *App) Perform(conn *Conn, msg *Message) {
 
   res := rpc.Perform(conn.identifiers, msg.Identifier, msg.Data)
 
-  HandleReply(conn, res) 
+  HandleReply(conn, msg, res) 
 }
 
 func (app *App) Disconnected(conn *Conn) {
@@ -107,7 +108,7 @@ func Transmit(conn *Conn, transmissions []string) {
   }
 }
 
-func HandleReply(conn *Conn, reply *pb.CommandResponse) {
+func HandleReply(conn *Conn, msg *Message, reply *pb.CommandResponse) {
   if reply.Disconnect {
     defer conn.ws.Close()
   }
@@ -117,7 +118,7 @@ func HandleReply(conn *Conn, reply *pb.CommandResponse) {
   }
 
   if reply.StreamFrom {
-    hub.subscribe <- &SubscriptionInfo{conn: conn, stream: reply.StreamId}
+    hub.subscribe <- &SubscriptionInfo{conn: conn, stream: reply.StreamId, identifier: msg.Identifier}
   }
 
   Transmit(conn, reply.Transmissions)

@@ -62,6 +62,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    anyway_config (0.4.0)
+      activesupport (>= 3.2)
     arel (7.0.0)
     ast (2.3.0)
     autoprefixer-rails (6.3.6.2)
@@ -330,6 +332,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  anyway_config
   autoprefixer-rails
   better_errors
   binding_of_caller
