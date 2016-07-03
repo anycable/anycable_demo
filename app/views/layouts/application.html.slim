@@ -28,5 +28,7 @@ html
 
     .footer
       = Gon::Base.render_data
+      - if Rails.env.test?
+        = javascript_include_tag 'phantom'
       = javascript_include_tag 'application'
       = yield :scripts

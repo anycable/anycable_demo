@@ -1,9 +1,9 @@
-- if @products.any?
-  .collection#products_list
+.collection#products_list
+  - if @products.any?
     = render @products
-- else
-  .row
-    .col.s6.offset-s3.center No Products(
+  - else
+    div
+      .col.s6.offset-s3.center No Products(
 
 = render 'shared/add_btn', id: "add_product_btn"
 = render 'products/form'

@@ -13,7 +13,8 @@ $ ->
 
   addBasket = (data) ->
     return if $("#basket_#{data.id}")[0]
-    basketsList.append App.utils.render('basket', data)    
+    basketsList.empty() unless basketsList.find('.basket').length
+    basketsList.append App.utils.render('basket', data)
 
   addBusketBtn.on 'click', (e) ->
     e.preventDefault()

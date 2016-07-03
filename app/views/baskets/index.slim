@@ -1,11 +1,11 @@
 h3 Baskets
 
-- if @baskets.any?
-  .baskets-list#baskets_list
+.baskets-list#baskets_list
+  - if @baskets.any?
     = render @baskets
-- else
-  .row
-    .col.s6.offset-s3.center No baskets found(
+  - else
+    div
+      .col.s6.offset-s3.center No baskets found(
 
 = render 'shared/add_btn', id: "add_basket_btn"
 = render 'form'

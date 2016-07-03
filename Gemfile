@@ -59,19 +59,19 @@ end
 
 group :test do
   # RSpec tools
-  # gem 'rspec-rails', '~> 3.5.0'
-  # gem 'capybara'
-  # gem 'fuubar'
-  # gem 'database_cleaner'
-  # gem 'shoulda-matchers'
-  # gem 'timecop'
-  # gem 'zonebie'
-  # gem 'json_spec'
-  # gem 'test_after_commit'
+  gem 'rspec-rails', '~> 3.5.0'
+  gem 'capybara'
+  gem 'fuubar'
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
+  gem 'timecop'
+  gem 'zonebie'
+  gem 'json_spec'
+  # gem 'test_after_commit' Baked into Rails 5
   # gem 'rspec-sidekiq'
-  # gem 'show_me_the_cookies'
-  # gem 'poltergeist', '~> 1.9'
+  gem 'show_me_the_cookies'
+  gem 'poltergeist', '~> 1.9'
   # gem 'email_spec'
-  # gem 'rack_session_access'
-  # gem 'rspec-page-regression', github: 'teachbase/rspec-page-regression', branch: 'use-imatcher'
+  gem 'rack_session_access'
+  gem 'rspec-page-regression', github: 'teachbase/rspec-page-regression', branch: 'use-imatcher'
 end
