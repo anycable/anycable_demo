@@ -2,12 +2,13 @@ package main
 
 import (
 	"flag"
-	"log"
     "time"
 	"net/http"
     "encoding/json"
+    "os"
 
 	"github.com/gorilla/websocket"
+    "github.com/op/go-logging"
 )
 
 const (
@@ -36,6 +37,8 @@ type Conn struct {
     send chan []byte
 }
 
+var log = logging.MustGetLogger("main")
+
 var rpchost = flag.String("rpc", "0.0.0.0:50051", "rpc service address")
 
 var addr = flag.String("addr", "0.0.0.0:8080", "http service address")
@@ -50,7 +53,7 @@ var upgrader = websocket.Upgrader{
 // readPump pumps messages from the websocket connection to the hub.
 func (c *Conn) readPump() {
     defer func() {
-        log.Printf("Disconnect on read error")
+        log.Debugf("Disconnect on read error")
         app.Disconnected(c)
         c.ws.Close()
     }()
@@ -59,7 +62,7 @@ func (c *Conn) readPump() {
 
         if err != nil {
             if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-                log.Printf("read error: %v", err)
+                log.Debugf("read error: %v", err)
             }
             break
         }
@@ -67,7 +70,7 @@ func (c *Conn) readPump() {
         msg := &Message{}
 
         if err := json.Unmarshal(message, &msg); err != nil {
-            log.Printf("Unknown message: %s", message)
+            log.Debugf("Unknown message: %s", message)
         }else{
             switch msg.Command {
                 case "subscribe":
@@ -77,7 +80,7 @@ func (c *Conn) readPump() {
                 case "message":
                     app.Perform(c, msg)
                 default:
-                    log.Printf("Unknown command: %s", msg.Command)
+                    log.Debugf("Unknown command: %s", msg.Command)
             }            
         }
     }
@@ -90,69 +93,78 @@ func (c *Conn) write(mt int, payload []byte) error {
 }
 
 func (c *Conn) writePump() {
-    defer c.ws.Close()
-    for {
-        select {
-            case message, ok := <-c.send:
-                if !ok {
-                    // The hub closed the channel.
-                    c.write(websocket.CloseMessage, []byte{})
-                    return
-                }
+  defer c.ws.Close()
+  for {
+    select {
+      case message, ok := <-c.send:
+        if !ok {
+          // The hub closed the channel.
+          c.write(websocket.CloseMessage, []byte{})
+          return
+        }
 
-                c.ws.SetWriteDeadline(time.Now().Add(writeWait))
-                w, err := c.ws.NextWriter(websocket.TextMessage)
-                if err != nil {
-                    return
-                }
-                w.Write(message)
+        c.ws.SetWriteDeadline(time.Now().Add(writeWait))
+        w, err := c.ws.NextWriter(websocket.TextMessage)
+        if err != nil {
+          return
+        }
+        w.Write(message)
 
-                if err := w.Close(); err != nil {
-                    return
-                }
+        if err := w.Close(); err != nil {
+          return
         }
     }
+  }
 }
 
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
-    ws, err := upgrader.Upgrade(w, r, nil)
-    if err != nil {
-        log.Println(err)
-        return
-    }
+  ws, err := upgrader.Upgrade(w, r, nil)
+  if err != nil {
+      log.Critical(err)
+      return
+  }
 
-    response := rpc.VerifyConnection(r)
+  response := rpc.VerifyConnection(r)
 
-    if response.Status != 1 {
-        log.Println("Auth Failed")
-        ws.Close()
-        return
-    }
+  if response.Status != 1 {
+      log.Warningf("Auth Failed")
+      ws.Close()
+      return
+  }
 
-    log.Printf("Connection identifiers: %s", response.Identifiers)
-
-    conn := &Conn{send: make(chan []byte, 256), ws: ws, identifiers: response.Identifiers, subscriptions: make(map[string]bool)}
-    app.Connected(conn, response.Transmissions)
-    go conn.writePump()
-    conn.readPump()
+  conn := &Conn{send: make(chan []byte, 256), ws: ws, identifiers: response.Identifiers, subscriptions: make(map[string]bool)}
+  app.Connected(conn, response.Transmissions)
+  go conn.writePump()
+  conn.readPump()
 }
 
 func main() {
-	flag.Parse()
-	log.SetFlags(0)
-    go hub.run()
+  logflag := flag.Bool("log", false, "enable verbose logging")
+  flag.Parse()
 
-    app.Pinger = &Pinger{interval: pingPeriod, cmd: make(chan string)}
+  backend := logging.AddModuleLevel(logging.NewLogBackend(os.Stderr, "", 0))
 
-    rpc.Init(*rpchost)
-    defer rpc.Close()
+  if *logflag {
+    backend.SetLevel(logging.DEBUG, "")
+  } else {
+    backend.SetLevel(logging.INFO, "")
+  }
 
-    app.Subscriber = &Subscriber{host: "redis://localhost:6379/5", channel: "anycable"}
-    go app.Subscriber.run()
+  logging.SetBackend(backend)
 
-    log.Printf("Running websocket server on %s", *addr)
+  go hub.run()
+
+  app.Pinger = &Pinger{interval: pingPeriod, cmd: make(chan string)}
+
+  rpc.Init(*rpchost)
+  defer rpc.Close()
+
+  app.Subscriber = &Subscriber{host: "redis://localhost:6379/5", channel: "anycable"}
+  go app.Subscriber.run()
+
+  log.Infof("Running websocket server on %s", *addr)
 	http.HandleFunc("/cable", serveWs)
-	log.Fatal(http.ListenAndServe(*addr, nil))
+	http.ListenAndServe(*addr, nil)
 }

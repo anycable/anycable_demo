@@ -1,7 +1,6 @@
 package main
 
 import (
-  "log"
   "encoding/json"
 
   pb "./protos"
@@ -49,7 +48,7 @@ func (app *App) Connected(conn *Conn, transmissions []string) {
 
 func (app *App) Subscribe(conn *Conn, msg *Message) {
   if _, ok := conn.subscriptions[msg.Identifier]; ok {
-    log.Printf("Already Subscribed to %s", msg.Identifier)
+    log.Warningf("Already Subscribed to %s", msg.Identifier)
     return
   }
 
@@ -64,7 +63,7 @@ func (app *App) Subscribe(conn *Conn, msg *Message) {
 
 func (app *App) Unsubscribe(conn *Conn, msg *Message) {
   if _, ok := conn.subscriptions[msg.Identifier]; !ok {
-    log.Printf("Unknown subscription %s", msg.Identifier)
+    log.Warningf("Unknown subscription %s", msg.Identifier)
     return
   }
 
@@ -79,7 +78,7 @@ func (app *App) Unsubscribe(conn *Conn, msg *Message) {
 
 func (app *App) Perform(conn *Conn, msg *Message) {
   if _, ok := conn.subscriptions[msg.Identifier]; !ok {
-    log.Printf("Unknown subscription %s", msg.Identifier)
+    log.Warningf("Unknown subscription %s", msg.Identifier)
     return
   }
 

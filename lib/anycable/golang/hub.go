@@ -1,8 +1,6 @@
 package main
 
 import (
-  "log"
-
   "encoding/json"
 )
 
@@ -66,11 +64,11 @@ func (h *Hub) run() {
   for {
     select {
       case conn := <-h.register:
-        log.Printf("Register connection %v", conn)
+        log.Debugf("Register connection %v", conn)
         h.connections[conn] = true
 
       case conn := <-h.unregister:
-        log.Printf("Unregister connection %v", conn) 
+        log.Debugf("Unregister connection %v", conn) 
         
         h.UnsubscribeConnection(conn)
 
@@ -80,7 +78,7 @@ func (h *Hub) run() {
         }
 
       case message := <-h.broadcast:
-        log.Printf("Broadcast message %s", message)
+        log.Debugf("Broadcast message %s", message)
         for conn := range h.connections {
           select {
             case conn.send <- message:
@@ -91,10 +89,10 @@ func (h *Hub) run() {
         }
 
       case stream_message := <- h.stream_broadcast:
-        log.Printf("Broadcast to stream %s: %s", stream_message.Stream, stream_message.Data)
+        log.Debugf("Broadcast to stream %s: %s", stream_message.Stream, stream_message.Data)
 
         if _, ok := h.streams[stream_message.Stream]; !ok {
-          log.Printf("No connections for stream %s", stream_message.Stream)
+          log.Debugf("No connections for stream %s", stream_message.Stream)
           return
         }
 
@@ -116,7 +114,7 @@ func (h *Hub) run() {
         }
 
       case subinfo := <- h.subscribe:
-        log.Printf("Subscribe to stream %s for %s", subinfo.stream, subinfo.conn.identifiers)
+        log.Debugf("Subscribe to stream %s for %s", subinfo.stream, subinfo.conn.identifiers)
 
         if _, ok := h.streams[subinfo.stream]; !ok {
           h.streams[subinfo.stream] = make(map[*Conn]bool)
@@ -141,7 +139,7 @@ func (h *Hub) Size() int {
 }
 
 func (h *Hub) UnsubscribeConnection(conn *Conn) {
-  log.Printf("Unsubscribe from all streams %s", conn.identifiers)
+  log.Debugf("Unsubscribe from all streams %s", conn.identifiers)
 
   for _, stream := range h.connection_streams[conn] {
     delete(h.streams[stream], conn)

@@ -14,6 +14,7 @@ deps-go:
 	go get github.com/gorilla/websocket
 	go get github.com/soveran/redisurl
 	go get github.com/garyburd/redigo/redis
+	go get github.com/op/go-logging
 
 test:
 	CABLE_URL='ws://0.0.0.0:8080/cable' bundle exec rspec

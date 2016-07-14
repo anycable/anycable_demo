@@ -2,7 +2,6 @@ package main
 
 import (
   "time"
-  "log"
 )
 
 type Pinger struct {
@@ -21,13 +20,13 @@ func (p *Pinger) run() {
       case <-p.ticker.C:
         app.BroadcastAll((&Reply{Type: "ping", Message: time.Now().Unix()}).toJSON())
       case <-p.cmd:
-        log.Printf("Ping paused")
+        log.Debugf("Ping paused")
         break loop
       }
     }
 }
 
 func (p *Pinger) pause() {
-  log.Printf("Pause ping")
+  log.Debugf("Pause ping")
   p.cmd <- "stop"
 }

@@ -1,8 +1,6 @@
 package main
 
 import (
-  "log"
-
   "encoding/json"
 
   "github.com/soveran/redisurl"
@@ -26,16 +24,16 @@ func (s *Subscriber) run() {
   for {
       switch v := psc.Receive().(type) {
       case redis.Message:
-          log.Printf("[Redis] channel %s: message: %s\n", v.Channel, v.Data)
+          log.Debugf("[Redis] channel %s: message: %s\n", v.Channel, v.Data)
           msg := &StreamMessage{}
           if err := json.Unmarshal(v.Data, &msg); err != nil {
-            log.Printf("Unknown message: %s", v.Data)
+            log.Debugf("Unknown message: %s", v.Data)
           }else{
-            log.Printf("Broadcast %v", msg)
+            log.Debugf("Broadcast %v", msg)
             hub.stream_broadcast <- msg
           }
       case redis.Subscription:
-          log.Printf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
+          log.Debugf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
       case error:
           break
       }

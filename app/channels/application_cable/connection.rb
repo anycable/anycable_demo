@@ -4,7 +4,7 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      self.current_user = verify_user
+      self.current_user = verify_user unless Nenv.skip_auth?
     end
 
     private
