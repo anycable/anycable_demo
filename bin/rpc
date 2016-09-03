@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'anycable/server'
-
-require ::File.expand_path('../../config/environment',  __FILE__)
-Rails.application.eager_load!
-
-Anycable.logger = Logger.new(STDOUT) unless Nenv.skip_log?
-Anycable::Server.start

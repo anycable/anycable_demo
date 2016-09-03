@@ -1,2 +1,2 @@
-rpc: SKIP_AUTH=1 SKIP_LOG=1 bundle exec ./bin/rpc
+rpc: SKIP_AUTH=1 SKIP_LOG=1 bundle exec ./bin/anycable
 go: sleep 3 && go run lib/anycable/golang/*.go

@@ -62,6 +62,11 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    anycable (0.1.0)
+      anyway_config (~> 0.4.0)
+      grpc (~> 1.0)
+      rails (~> 5)
+      redis (~> 3.0)
     anyway_config (0.4.0)
       activesupport (>= 3.2)
     arel (7.0.0)
@@ -119,7 +124,7 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
-    google-protobuf (3.0.0.alpha.5.0.5.1)
+    google-protobuf (3.0.0)
     googleauth (0.5.1)
       faraday (~> 0.9)
       jwt (~> 1.4)
@@ -128,8 +133,8 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    grpc (0.15.0)
-      google-protobuf (~> 3.0.0.alpha.5.0.3)
+    grpc (1.0.0)
+      google-protobuf (~> 3.0)
       googleauth (~> 0.5.1)
     i18n (0.7.0)
     imatcher (0.1.5)
@@ -160,7 +165,7 @@ GEM
       railties (>= 3.2)
     materialize-sass (0.97.6)
       sass (~> 3.3)
-    memoist (0.14.0)
+    memoist (0.15.0)
     method_source (0.8.2)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -326,7 +331,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  anyway_config
+  anycable (~> 0.1)
   autoprefixer-rails
   better_errors
   binding_of_caller
@@ -338,7 +343,6 @@ DEPENDENCIES
   faker!
   fuubar
   gon
-  grpc
   jquery-rails
   json_spec
   listen (~> 3.0.5)

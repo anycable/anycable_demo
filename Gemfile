@@ -18,7 +18,6 @@ gem 'materialize-sass'
 gem 'material_icons'
 gem 'skim'
 gem 'gon'
-gem 'anyway_config'
 
 gem 'redis', '~> 3.0'
 
@@ -26,8 +25,7 @@ gem 'rack-cors'
 
 # Other
 gem 'nenv'
-
-gem 'grpc', require: false
+gem 'anycable', '~> 0.1' #, github: 'anycable/anycable', branch: 'master'
 
 gem 'tzinfo'
 gem 'tzinfo-data'
