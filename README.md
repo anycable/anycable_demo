@@ -8,17 +8,6 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 
 ## Requirements
 
-We use Websockets server written in Go. You need Go environment to run the application.
-
-Run:
-
-```sh
-make deps-go
-```
-
-to install Go packages.
-
-Other requirements:
 - Ruby ~> 2.3
 - PostgreSQL >= 9.4
 - Redis

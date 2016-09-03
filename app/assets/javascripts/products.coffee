@@ -13,7 +13,7 @@ $ ->
 
   addProduct = (data) ->
     return if $("#product_#{data.id}")[0]
-    productsList.empty() unless productsList.find('.product').length
+    productsList.empty() unless productsList.find('.product-content').length
     productsList.append App.utils.render('product', data)
 
   addBusketBtn.on 'click', (e) ->
