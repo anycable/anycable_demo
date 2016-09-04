@@ -25,7 +25,7 @@ gem 'rack-cors'
 
 # Other
 gem 'nenv'
-gem 'anycable', '~> 0.1' #, github: 'anycable/anycable', branch: 'master'
+gem 'anycable', '~> 0.1', require: false #, github: 'anycable/anycable', branch: 'master'
 
 gem 'tzinfo'
 gem 'tzinfo-data'
