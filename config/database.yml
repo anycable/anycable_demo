@@ -1,0 +1,20 @@
+default: &default
+  adapter: sqlite3
+  encoding: unicode
+  # user: redspread
+  # password: redspread
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development: &development
+  <<: *default
+  database: db/dev.sqlite3
+
+test:
+  <<: *default
+  database: db/test.sqlite3
+
+production:
+  <<: *development
+  database: db/prod.sqlite3

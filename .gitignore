@@ -13,9 +13,6 @@
 # Ignore the default SQLite database.
 
 # production files
-config/database.yml
-config/secrets.yml
-
 /tmp
 
 *.log
@@ -26,6 +23,8 @@ config/secrets.yml
 /public/system
 /public/system_test*
 .DS_Store
+
+*.sqlite3
 
 /.idea
 
