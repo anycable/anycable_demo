@@ -1,0 +1,2 @@
+web: CABLE_URL='ws://localhost:8081/ws/cable' bundle exec rails s
+rpc: ANYCABLE_DEBUG=1 SKIP_AUTH=1 bundle exec ./bin/anycable

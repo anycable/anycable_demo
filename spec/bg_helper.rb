@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 hive_pid = nil
+
+procfile = ENV['PROCFILE'] || 'Procfile.spec'
 
 puts "Starting background processes..."
 rout, wout = IO.pipe
-hive_pid = Process.spawn('hivemind Procfile.spec', out: wout)
+hive_pid = Process.spawn("hivemind #{procfile}", out: wout)
 
 Timeout.timeout(10) do
   loop do
