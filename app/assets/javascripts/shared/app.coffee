@@ -54,3 +54,11 @@ $ ->
 
   App.cable = ActionCable.createConsumer()
 
+  notificationChannel = App.cable.subscriptions.create 'NotificationChannel', NotificationChannel
+
+  notificationChannel.handle_message = (type, data) ->
+    if type is 'alert'
+      App.utils.errorMessage(data)
+    else if type is 'success'
+      App.utils.successMessage(data)
+

@@ -5,7 +5,7 @@ require 'capybara/poltergeist'
 require "rack_session_access/capybara"
 require "puma"
 
-require "bg_helper" if Nenv.cable_url?
+require "bg_helper" if Nenv.cable_url? && !Nenv.skip_bg?
 
 RSpec.configure do |config|
   include ActionView::RecordIdentifier

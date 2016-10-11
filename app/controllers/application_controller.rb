@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     redirect_to(login_path) unless logged_in?
+    gon.user_id = current_user
   end
 
   def channel_name
