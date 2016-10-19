@@ -4,6 +4,8 @@ hive_pid = nil
 
 procfile = ENV['PROCFILE'] || 'Procfile.spec'
 
+wait = Regexp.new(ENV['BG_WAIT'] || '.+')
+
 puts "Starting background processes..."
 rout, wout = IO.pipe
 hive_pid = Process.spawn("hivemind #{procfile}", out: wout)
@@ -11,7 +13,7 @@ hive_pid = Process.spawn("hivemind #{procfile}", out: wout)
 Timeout.timeout(10) do
   loop do
     output = rout.readline
-    break if output =~ /RPC server is listening on/
+    break if output =~ wait
   end
 end
 

@@ -1,7 +1,7 @@
 #= require ./base
 
 window.NotificationChannel = Object.assign({
-  handle_connected: -> @perform 'follow', id: gon.user_id
+  handle_connected: -> @perform 'follow'
   name: -> 'NotificationChannel'
 }, BaseChannel)
 

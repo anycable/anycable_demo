@@ -54,7 +54,12 @@ $ ->
 
   App.cable = ActionCable.createConsumer()
 
-  notificationChannel = App.cable.subscriptions.create 'NotificationChannel', NotificationChannel
+  return unless gon.user_id
+
+  notificationChannel = App.cable.subscriptions.create(
+    { channel: 'NotificationChannel', id: gon.user_id },
+    NotificationChannel
+  )
 
   notificationChannel.handle_message = (type, data) ->
     if type is 'alert'

@@ -1,2 +1,2 @@
-rpc: ANYCABLE_DEBUG=1 bundle exec ./bin/anycable
-go: sleep 3 && ./bin/anycable-go
+rpc: bundle exec ./bin/anycable
+go: sleep 5 && ./bin/anycable-go -addr '0.0.0.0:3334'

@@ -1,6 +1,7 @@
 class NotificationChannel < ApplicationCable::Channel
-  def follow(data)
-    stream_from "notifications_#{data['id']}"
+  def follow
+    stop_all_streams
+    stream_from "notifications_#{params['id']}"
     stream_from "notifications"
   end
 end

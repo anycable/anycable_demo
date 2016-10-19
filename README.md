@@ -13,7 +13,6 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 - Redis
 - [hivemind](https://github.com/DarthSim/hivemind) (optional)
 
-
 ## Usage
 
 To launch AnyCable version:
@@ -30,6 +29,23 @@ This runs 3 processes:
 - Rails Web app
 - Rails RPC server ([GRPC](http://www.grpc.io))
 - Go Websockets server
+
+To launch AnyCable version with [ErlyCable](https://github.com/anycable/erlycable) you should set `ERLYCABLE_PATH` env variable first (or provide when running commands) pointing to ErlyCable repo path (i.e. `/my/path/to/erlycable`).
+
+ErlyCable also requires [Erlang](http://www.erlang.org) >=18.0 and [rebar3](https://www.rebar3.org).
+
+```sh
+# Run dev server
+hivemind Procfile.erly
+
+# Run specs
+make test-erl
+```
+
+This runs 3 processes:
+- Rails Web app
+- Rails RPC server ([GRPC](http://www.grpc.io))
+- ErlyCable server (as `rebar3 shell`)
 
 To launch _plain_ Rails version:
 

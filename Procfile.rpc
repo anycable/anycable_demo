@@ -1,1 +1,0 @@
-rpc: ANYCABLE_DEBUG=1 SKIP_AUTH=1 bundle exec ./bin/anycable

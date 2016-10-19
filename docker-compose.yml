@@ -1,0 +1,33 @@
+app:
+  build: .
+  volumes:
+    - .:/app
+  ports:
+    - "3000:3000"
+  environment:
+    - ANYCABLE_REDIS_URL=redis://redis:6379/
+    - CABLE_URL=ws://localhost:8080/cable
+  links:
+    - redis
+rpc:
+  build: .
+  command: ./bin/anycable
+  volumes:
+    - .:/app
+  environment:
+    - ANYCABLE_REDIS_URL=redis://redis:6379/
+    - ANYCABLE_RPC_HOST=0.0.0.0:50051
+  links:
+    - redis
+redis:
+  image: 'redis:3.2-alpine'
+anycable:
+  image: 'anycable/anycable-go:latest'
+  ports:
+    - "8080:8080"
+  environment:
+    - REDIS=redis://redis:6379/0
+    - RPC=rpc:50051
+  links:
+    - redis
+    - rpc
