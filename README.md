@@ -16,7 +16,13 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 
 **NOTE**: MacOS Sierra has a [problem with gRPC](https://github.com/grpc/grpc/issues/8403).
 
-## Usage
+## Usage with Docker
+
+You can use Docker to run the application with AnyCable server (Go version).
+
+Simply run `docker-compose up` and you'll be able to access the application on `http://localhost:3000`.
+
+## Usage without Docker
 
 To launch AnyCable version:
 
