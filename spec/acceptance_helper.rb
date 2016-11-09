@@ -14,7 +14,7 @@ RSpec.configure do |config|
 
   config.include_context "feature", type: :feature
 
-  Capybara.server_host = "0.0.0.0"
+  Capybara.server_host = ENV['HOST'] || "localhost"
   Capybara.server_port = 3001 + ENV['TEST_ENV_NUMBER'].to_i
   Capybara.default_max_wait_time = 10
   Capybara.save_path = "./tmp/capybara_output"

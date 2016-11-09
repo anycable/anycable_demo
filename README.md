@@ -39,7 +39,7 @@ This runs 3 processes:
 - Rails RPC server ([GRPC](http://www.grpc.io))
 - Go Websockets server
 
-To launch AnyCable version with [ErlyCable](https://github.com/anycable/erlycable) you should set `ERLYCABLE_PATH` env variable first (or provide when running commands) pointing to ErlyCable repo path (i.e. `/my/path/to/erlycable`).
+To launch AnyCable version with [ErlyCable](https://github.com/anycable/erlycable) you should set `ERLYCABLE_DIR` env variable first (or provide when running commands) pointing to ErlyCable repo path (i.e. `/my/path/to/erlycable`).
 
 ErlyCable also requires [Erlang](http://www.erlang.org) >=18.0 and [rebar3](https://www.rebar3.org).
 
