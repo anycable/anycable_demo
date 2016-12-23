@@ -27,8 +27,6 @@ module AnyCableDemo
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    config.assets.quite = true
-
     # add all upper level assets
     config.assets.precompile +=
     Dir[Rails.root.join('app/assets/*/*.{js,css,coffee,sass,scss}*')]
