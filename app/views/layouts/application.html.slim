@@ -23,6 +23,9 @@ html
                   | On
               span.username ="@#{current_user}"
               = image_tag Faker::Avatar.image(current_user, "50x50")
+              .nav-button.notifications-btn#notifications_btn
+                i.material-icons.active network_wifi
+                i.material-icons.inactive signal_wifi_off
     .container.main
       = yield
 

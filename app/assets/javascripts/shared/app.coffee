@@ -27,6 +27,11 @@ App.utils =
     console.warn(message)
     Materialize.toast(message, 4000, 'red')
 
+  simpleMessage: (message) ->
+    return unless message
+    console.log(message)
+    Materialize.toast(message, 4000, 'grey')
+
   ajaxErrorHandler: (e, data) ->
     message = 'Unknown error'
     if data.status == 401
@@ -56,14 +61,15 @@ $ ->
 
   return unless gon.user_id
 
-  notificationChannel = App.cable.subscriptions.create(
-    { channel: 'NotificationChannel', id: gon.user_id },
-    NotificationChannel
-  )
+  notifications = new Notifications()
+  notifications.on()
 
-  notificationChannel.handle_message = (type, data) ->
-    if type is 'alert'
-      App.utils.errorMessage(data)
-    else if type is 'success'
-      App.utils.successMessage(data)
+  notificationsBtn = $('.notifications-btn')
+
+  notificationsBtn.on 'click', (e) ->
+    if notificationsBtn.hasClass('is-disabled')
+      notifications.on()
+    else
+      notifications.off()
+    notificationsBtn.toggleClass('is-disabled')
 

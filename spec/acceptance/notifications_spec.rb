@@ -32,4 +32,31 @@ feature 'notifications', :js do
       end
     end
   end
+
+  scenario "unsubscribe from notifications and subscribe again" do
+    sign_in('john')
+    visit baskets_path
+
+    expect(page).to have_content 'Welcome, john!'
+
+    ActionCable.server.broadcast "notifications", type: 'notice', data: 'Bla-bla'
+    expect(page).to have_content 'Bla-bla'
+
+    page.find("#notifications_btn").trigger('click')
+
+    ActionCable.server.broadcast "notifications", type: 'notice', data: 'Are you here?'
+    ActionCable.server.broadcast "notifications_john", type: 'success', data: 'Come back, John!'
+
+    expect(page).not_to have_content 'Are you here?'
+    expect(page).not_to have_content 'Come back, John!'
+
+    # Ensure that the first notification disappeared
+    expect(page).not_to have_content 'Welcome, john!'
+
+    page.find("#notifications_btn").trigger('click')
+    expect(page).to have_content 'Welcome, john!'
+
+    ActionCable.server.broadcast "notifications", type: 'success', data: 'Hi, John!'
+    expect(page).to have_content 'Hi, John!'
+  end
 end

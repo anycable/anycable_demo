@@ -22,6 +22,21 @@ body
   display: flex
   align-items: center
 
+.nav-button
+  cursor: pointer
+  &:hover
+    opacity: 0.8
+
+.notifications-btn
+  color: #7ed321
+  .inactive
+    display: none
+  &.is-disabled
+    color: #9e9e9e
+    .active
+      display: none
+    .inactive
+      display: block
 
 .humanoids
   height: 50px

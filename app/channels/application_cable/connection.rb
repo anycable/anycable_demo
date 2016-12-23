@@ -7,6 +7,13 @@ module ApplicationCable
       self.current_user = verify_user unless Nenv.skip_auth?
     end
 
+    def disconnect
+      ActionCable.server.broadcast(
+        "notifications",
+        type: 'alert', data: "#{current_user} disconnected"
+      )
+    end
+
     private
 
     def verify_user
