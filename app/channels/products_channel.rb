@@ -4,7 +4,7 @@ class ProductsChannel < ApplicationCable::Channel
     stream_from "baskets/#{data['id']}"
   end
 
-  def unsubcribed
+  def unsubscribed
     ActionCable.server.broadcast(
       "notifications",
       type: 'notice', data: "#{current_user} left basket page"
