@@ -25,7 +25,8 @@ gem 'rack-cors'
 
 # Other
 gem 'nenv'
-gem 'anycable', '~> 0.1', require: false #, github: 'anycable/anycable', branch: 'master'
+
+gem 'anycable', '~> 0.3.0', require: false
 
 gem 'tzinfo'
 gem 'tzinfo-data'
@@ -65,11 +66,9 @@ group :test do
   gem 'timecop'
   gem 'zonebie'
   gem 'json_spec'
-  # gem 'test_after_commit' Baked into Rails 5
-  # gem 'rspec-sidekiq'
   gem 'show_me_the_cookies'
   gem 'poltergeist', '~> 1.9'
-  # gem 'email_spec'
+
   gem 'rack_session_access'
   gem 'rspec-page-regression', github: 'teachbase/rspec-page-regression', branch: 'use-imatcher'
 end
