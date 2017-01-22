@@ -26,7 +26,7 @@ gem 'rack-cors'
 # Other
 gem 'nenv'
 
-gem 'anycable', '~> 0.3.0', require: false
+gem 'anycable-rails', '~> 0.4.0', require: false
 
 gem 'tzinfo'
 gem 'tzinfo-data'
