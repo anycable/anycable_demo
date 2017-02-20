@@ -50,5 +50,37 @@ feature 'create product', :js do
         expect(page).to have_content 'Test product'
       end
     end
+
+    scenario "users on /baskets see basket count updates in real-time" do
+      Capybara.using_session('first') do
+        sign_in('john')
+        visit basket_path(basket)
+      end
+
+      Capybara.using_session('second') do
+        sign_in('jack')
+        visit baskets_path
+      end
+
+      Capybara.using_session('second') do
+        find("#basket_#{basket.id} .badge", text: 0, match: :prefer_exact)
+      end
+
+      Capybara.using_session('first') do
+        page.find("#add_product_btn").trigger('click')
+
+        within "#product_form" do
+          fill_in 'Name', with: 'Test product'
+          click_on 'Save'
+        end
+
+        expect(page).to have_content I18n.t('products.create.message')
+        expect(page).to have_content 'Test product'
+      end
+
+      Capybara.using_session('second') do
+        find("#basket_#{basket.id} .badge", text: 1, match: :prefer_exact)
+      end
+    end
   end
 end
