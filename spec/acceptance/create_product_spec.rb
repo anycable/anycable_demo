@@ -23,7 +23,7 @@ feature 'create product', :js do
   end
 
   context "multiple sessions" do
-    scenario "all users see new basket in real-time" do
+    scenario "all users see new product in real-time" do
       Capybara.using_session('first') do
         sign_in('john')
         visit basket_path(basket)
