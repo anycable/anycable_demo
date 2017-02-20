@@ -6,15 +6,21 @@ $ ->
   basketsChannel = App.cable.subscriptions.create 'BasketsChannel', BasketsChannel
 
   basketsChannel.handle_message = (type, data) ->
-    if type is 'destroy'
-      $("#basket_#{data.id}").remove()
-    else if type is 'create'
-      addBasket(data)
+    switch type
+      when 'destroy' then $("#basket_#{data.id}").remove()
+      when 'create' then addBasket(data)
+      when 'products-update' then updateProductCount(data)
 
   addBasket = (data) ->
     return if $("#basket_#{data.id}")[0]
     basketsList.empty() unless basketsList.find('.basket').length
     basketsList.append App.utils.render('basket', data)
+
+  updateProductCount = (data) ->
+    basket = basketsList.find("#basket_#{data.basket_id}")
+    return unless basket
+    badge = basket.find('.badge')
+    badge.text data.count
 
   addBusketBtn.on 'click', (e) ->
     e.preventDefault()

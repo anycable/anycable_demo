@@ -4,12 +4,14 @@ class ProductsController < ApplicationController
   def create
     @product = @basket.products.create(product_params)
     render_json @product
+    broadcast_products_update(@basket)
   end
 
   def destroy
     @product = Product.find(params[:id])
     @product.destroy!
     render_json_message
+    broadcast_products_update(@product.basket)
   end
 
   private
@@ -24,5 +26,15 @@ class ProductsController < ApplicationController
 
   def set_basket
     @basket = Basket.find(params[:basket_id])
+  end
+
+  def broadcast_products_update(basket)
+    ActionCable.server.broadcast 'baskets', {
+      type: 'products-update',
+      data: {
+        basket_id: basket.id,
+        count: basket.products.count
+      }
+    }
   end
 end
