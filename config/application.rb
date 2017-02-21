@@ -24,6 +24,7 @@ module AnyCableDemo
     config.time_zone = "Berlin"
     config.action_cable.disable_request_forgery_protection = true
     config.action_cable.url = Nenv.cable_url
+    config.action_cable.mount_path = Nenv.cable_url? ? nil : "/cable"
 
     config.autoload_paths += %W(#{config.root}/lib)
 
