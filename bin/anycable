@@ -11,7 +11,7 @@ Rails.application.eager_load!
 
 if ENV['ANYCABLE_DEPLOYMENT']
   go_thread = Thread.new do
-    Process.wait Process.spawn('anycable-go -log')
+    Process.wait Process.spawn('anycable-go')
     raise "Anycable-Go failed!"
   end
 
