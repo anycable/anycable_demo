@@ -1,0 +1,33 @@
+{
+  "name": "onboardiq_app-review",
+  "buildpacks": [
+    {
+      "url": "https://github.com/anycable/heroku-anycable-go"
+    },
+    {
+      "url": "https://github.com/heroku/exec-buildpack"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "formation": [
+    {
+      "process": "web",
+      "size": "hobby",
+      "quantity": 1
+    },
+    {
+      "process": "rpc",
+      "size": "hobby",
+      "quantity": 1
+    }
+  ],
+  "scripts": {
+    "postdeploy": "rake db:schema:load db:seed"
+  },
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis"
+  ]
+}
