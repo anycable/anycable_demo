@@ -1,5 +1,9 @@
 {
-  "name": "onboardiq_app-review",
+  "name": "Anycable Demo",
+  "description": "Anycable Rails demo application",
+  "repository": "https://github.com/anycable/anycable_demo",
+  "logo": "https://s3.amazonaws.com/anycable/WB.png",
+  "keywords": ["ruby", "anycable", "rails"],
   "buildpacks": [
     {
       "url": "https://github.com/anycable/heroku-anycable-go"
