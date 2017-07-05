@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.1'
+gem 'rails', '~> 5.1'
 # Use sqlite3
 gem 'sqlite3'
 # Use Puma as the app server
@@ -9,7 +9,7 @@ gem 'puma', '~> 3.0'
 
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 4.2.0'
 gem 'slim-rails'
 gem 'autoprefixer-rails'
 gem 'csso-rails'

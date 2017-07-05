@@ -28,7 +28,7 @@ To launch AnyCable version:
 
 ```sh
 # Run dev server
-hivemind
+hivemind Procfile.dev
 
 # Run specs
 make test
