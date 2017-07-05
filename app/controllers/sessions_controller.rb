@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
     @session_form = SessionForm.new(session_params)
     if @session_form.valid?
       reset_session
-      session[:username] = cookies[:username] = @session_form.username
+      session[:username] = @session_form.username
+      cookies[:username] = { value: @session_form.username, domain: :all }
       redirect_to root_path
     else
       render :new
