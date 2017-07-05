@@ -186,6 +186,7 @@ GEM
     os (0.9.6)
     parser (2.3.1.2)
       ast (~> 2.2)
+    pg (0.21.0)
     poltergeist (1.10.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -351,6 +352,7 @@ DEPENDENCIES
   material_icons
   materialize-sass
   nenv
+  pg
   poltergeist (~> 1.9)
   pry
   pry-byebug

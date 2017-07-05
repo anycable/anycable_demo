@@ -17,4 +17,7 @@ test:
 
 production:
   <<: *development
-  database: db/prod.sqlite3
+  adapter: postgresql
+  database: anycable_demo_db
+  pool: 5
+  timeout: 5000
