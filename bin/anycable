@@ -9,4 +9,9 @@ end
 
 Rails.application.eager_load!
 
+if ENV['ANYCABLE_DEPLOYMENT']
+  pid = Process.spawn('anycable-go -log')
+  Process.detach pid
+end
+
 Anycable::Server.start
