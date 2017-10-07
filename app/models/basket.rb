@@ -1,3 +1,5 @@
+require "faker/food"
+
 class Basket < ApplicationRecord
   before_create :set_defaults
 

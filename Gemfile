@@ -28,7 +28,7 @@ gem 'rack-cors'
 # Other
 gem 'nenv'
 
-gem 'anycable-rails', '~> 0.4.0', require: false
+gem 'anycable-rails', path: '../anycable-rails', require: false
 
 gem 'tzinfo'
 gem 'tzinfo-data'
@@ -36,8 +36,8 @@ gem 'tzinfo-data'
 gem 'active_model_serializers'
 
 gem 'factory_girl_rails', '~> 4.0'
-# Use latest Faker, it has some great new features (e.g. Crypto module)
-gem 'faker', github: 'stympy/faker'
+
+gem "faker", "~> 1.8.4"
 
 group :development, :test do
   gem 'pry'

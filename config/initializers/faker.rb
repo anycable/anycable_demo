@@ -1,7 +1,7 @@
-require 'faker'
+require 'faker/food'
 
 module Faker
-  module Food
+  class Food
     ICONS = [
       'apple',
       'asparagus',
@@ -161,13 +161,11 @@ module Faker
       'wrap'
     ].freeze
 
-    module_function
-
-    def icon(size = 48)
+    def self.icon(size = 48)
       "https://maxcdn.icons8.com/Color/PNG/#{size}/Food/#{ICONS.sample}-#{size}.png"
     end
 
-    def name
+    def self.name
       ICONS.sample.humanize
     end
   end

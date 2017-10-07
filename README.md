@@ -11,8 +11,8 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 - Ruby ~> 2.3
 - PostgreSQL >= 9.4
 - Redis
+- [anycable-go](https://github.com/anycable/anycable-go)
 - [hivemind](https://github.com/DarthSim/hivemind) (optional)
-- macOS (optional, [compile anycable-go yourself](https://github.com/anycable/anycable-go#installation) in case you run the demo in other OS)
 
 **NOTE**: MacOS Sierra has a [problem with gRPC](https://github.com/grpc/grpc/issues/8403).
 

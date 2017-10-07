@@ -1,3 +1,5 @@
+require "faker/food"
+
 class Product < ApplicationRecord
   CATEGORIES = %w(FRUIT VEGGIE BERRY MEAT FISH GAME HERB)
 
