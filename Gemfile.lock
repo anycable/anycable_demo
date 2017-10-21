@@ -8,13 +8,6 @@ GIT
       rspec (~> 3.5.0)
       which_works
 
-PATH
-  remote: ../anycable-rails
-  specs:
-    anycable-rails (0.5.0.rc2)
-      anycable (= 0.5.0.rc1)
-      rails (~> 5)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,11 +55,14 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    anycable (0.5.0.rc1)
-      anyway_config (~> 1.1)
+    anycable (0.5.0)
+      anyway_config (~> 1.1, >= 1.1.1)
       grpc (~> 1.6)
       redis (>= 3.2)
-    anyway_config (1.1.0)
+    anycable-rails (0.5.0)
+      anycable (~> 0.5.0)
+      rails (~> 5)
+    anyway_config (1.1.1)
     arel (8.0.0)
     ast (2.3.0)
     autoprefixer-rails (7.1.5)
@@ -137,7 +133,7 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
-    grpc (1.6.6-universal-darwin)
+    grpc (1.6.7-universal-darwin)
       google-protobuf (~> 3.1)
       googleapis-common-protos-types (~> 1.0.0)
       googleauth (~> 0.5.1)
@@ -285,10 +281,10 @@ GEM
       activesupport (>= 4.0.0)
     show_me_the_cookies (3.1.0)
       capybara (~> 2.0)
-    signet (0.7.3)
+    signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
-      jwt (~> 1.5)
+      jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
     skim (0.10.0)
       coffee-script
@@ -340,7 +336,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  anycable-rails!
+  anycable-rails (~> 0.5.0)
   autoprefixer-rails
   better_errors
   binding_of_caller
