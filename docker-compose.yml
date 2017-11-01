@@ -1,4 +1,4 @@
-app:
+app: &backend
   build: .
   volumes:
     - .:/app
@@ -21,6 +21,9 @@ rpc:
     - redis
 redis:
   image: 'redis:3.2-alpine'
+runner:
+  <<: *backend
+  entrypoint: /bin/bash
 anycable:
   image: 'anycable/anycable-go:0.5.0'
   ports:
