@@ -102,6 +102,7 @@ GEM
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
     diff-lcs (1.3)
+    dry-initializer (2.5.0)
     erubi (1.7.1)
     execjs (2.7.0)
     factory_girl (4.9.0)
@@ -171,6 +172,8 @@ GEM
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     powerpack (0.1.2)
+    prometheus-client (0.8.0)
+      quantile (~> 0.2.1)
     pry (0.12.0)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -181,6 +184,7 @@ GEM
       pry (>= 0.10.4)
     public_suffix (3.0.3)
     puma (3.12.0)
+    quantile (0.2.1)
     rack (2.0.6)
     rack-cors (1.0.2)
     rack-test (1.1.0)
@@ -308,6 +312,11 @@ GEM
     websocket-extensions (0.1.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yabeda (0.1.2)
+      concurrent-ruby
+      dry-initializer
+    yabeda-prometheus (0.1.4)
+      yabeda
     zonebie (0.6.1)
 
 PLATFORMS
@@ -336,6 +345,7 @@ DEPENDENCIES
   nenv
   pg
   poltergeist (~> 1.9)
+  prometheus-client
   pry
   pry-byebug
   pry-rails
@@ -358,6 +368,8 @@ DEPENDENCIES
   tzinfo
   tzinfo-data
   uglifier (>= 1.3.0)
+  yabeda
+  yabeda-prometheus
   zonebie
 
 BUNDLED WITH

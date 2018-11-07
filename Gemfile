@@ -31,6 +31,11 @@ gem 'nenv'
 gem 'anycable', path: '../anycable', require: false
 gem 'anycable-rails', path: '../anycable-rails'
 
+gem 'yabeda'
+
+gem 'prometheus-client'
+gem 'yabeda-prometheus'
+
 gem 'tzinfo'
 gem 'tzinfo-data'
 
