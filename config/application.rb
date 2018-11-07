@@ -10,7 +10,6 @@ require "action_controller/railtie"
 require "action_view/railtie"
 require "action_cable/engine"
 require "sprockets/railtie"
-# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,6 +26,8 @@ module AnyCableDemo
     config.action_cable.mount_path = Nenv.cable_url? ? nil : "/cable"
 
     config.autoload_paths += %W(#{config.root}/lib)
+
+    config.active_record.sqlite3.represent_boolean_as_integer = true
 
     # add all upper level assets
     config.assets.precompile +=

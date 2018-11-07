@@ -1,1 +1,0 @@
-web: SKIP_AUTH=1 bundle exec rails s -b 0.0.0.0 -e production

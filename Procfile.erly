@@ -1,3 +1,3 @@
 web: CABLE_URL='ws://localhost:3335/ws/cable' bundle exec rails s
-rpc: bundle exec ./bin/anycable
+rpc: bundle exec anycable
 erlang: sleep 5 && (cd $ERLYCABLE_DIR && rebar3 shell)

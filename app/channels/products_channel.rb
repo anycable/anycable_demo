@@ -7,7 +7,7 @@ class ProductsChannel < ApplicationCable::Channel
   def unsubscribed
     ActionCable.server.broadcast(
       "notifications",
-      type: 'notice', data: "#{current_user} left basket page"
+      type: 'notice', data: "#{current_user} left this basket page"
     )
   end
 end

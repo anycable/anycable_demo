@@ -1,2 +1,0 @@
-rpc: SKIP_AUTH=1 SKIP_LOG=1 bundle exec ./bin/anycable
-go: sleep 3 && ./bin/anycable-go

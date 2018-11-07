@@ -2,19 +2,18 @@
 
 Sample application demonstrating AnyCable concept.
 
-AnyCable allows you to use any WebSocket server (written in any language) as a replacement for built-in Ruby ActionCable server.
+AnyCable allows you to use any WebSocket server (written in any language) as a replacement for built-in Ruby Action Cable server.
 
-With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) all that you can do with ActionCable. You can even use ActionCable in development and not be afraid of compatibility issues.
+With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) all that you can do with Action Cable. You can even use Action Cable in development and not be afraid of compatibility issues.
 
 ## Requirements
 
-- Ruby ~> 2.3
+- Ruby ~> 2.4
 - PostgreSQL >= 9.4
 - Redis
 - [anycable-go](https://github.com/anycable/anycable-go)
 - [hivemind](https://github.com/DarthSim/hivemind) (optional)
-
-**NOTE**: MacOS Sierra has a [problem with gRPC](https://github.com/grpc/grpc/issues/8403).
+- PhantomJS (for tests only)
 
 ## Usage with Docker
 
@@ -27,7 +26,7 @@ Simply run `docker-compose up` and you'll be able to access the application on `
 To launch AnyCable version:
 
 ```sh
-# Run dev server
+# Run dev servers
 hivemind Procfile.dev
 
 # Run specs
@@ -60,8 +59,8 @@ To launch _plain_ Rails version:
 
 ```sh
 # Run dev server
-rails server
+bundle exec rails server
 
 # Run specs
-rspec
+bundle exec rspec
 ```

@@ -7,7 +7,7 @@ production:
   adapter: async
 
 development:
-  adapter: async
+  adapter: <%= ENV.fetch('ADAPTER', 'async') %>
 
 test:
-  adapter: async
+  adapter: <%= ENV.fetch('ADAPTER', 'async') %>

@@ -1,6 +1,5 @@
 require 'rails_helper'
 require 'capybara/rspec'
-require 'rspec/page-regression'
 require 'capybara/poltergeist'
 require "rack_session_access/capybara"
 require "puma"
@@ -24,7 +23,6 @@ RSpec.configure do |config|
     Capybara::Poltergeist::Driver.new(
       app,
       timeout: 90, js_errors: true,
-      phantomjs_logger: Logger.new(STDOUT),
       window_size: [1060, 800]
     )
   end
@@ -32,10 +30,6 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
 
   Capybara.server = :puma
-
-  RSpec::PageRegression.configure do |c|
-    c.threshold = 0.01
-  end
 
   config.append_after(:each) { Capybara.reset_sessions! }
 end

@@ -1,2 +1,1 @@
-rpc: bundle exec ./bin/anycable
-go: sleep 5 && ./bin/anycable-go -addr 'localhost:3334'
+rpc: ADAPTER=any_cable bundle exec anycable --server-command="anycable-go --port 3334"

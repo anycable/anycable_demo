@@ -1,11 +1,15 @@
 require "faker/food"
 
 class Product < ApplicationRecord
-  CATEGORIES = %w(FRUIT VEGGIE BERRY MEAT FISH GAME HERB)
+  CATEGORIES = %w(FRUIT VEGGIE BERRY MEAT FISH GAME HERB).freeze
 
   before_create :set_defaults
 
   belongs_to :basket, counter_cache: :items_count
+
+  def serialized(*)
+    { name: "Test:#{name}", category: category, icon_path: icon_path }
+  end
 
   private
 

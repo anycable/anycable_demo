@@ -7,6 +7,6 @@ shared_context "feature", type: :feature do
     line_number = meta[:line_number]
     screenshot_name = "screenshot-#{filename}-#{line_number}.png"
     save_screenshot(screenshot_name) # rubocop:disable Lint/Debugger
-    puts meta[:full_description] + "\n  Screenshot: #{screenshot_name}"
+    puts meta[:full_description] + "\n  Screenshot: #{Capybara.save_path}/#{screenshot_name}"
   end
 end

@@ -16,19 +16,20 @@ gem 'slim-rails'
 gem 'autoprefixer-rails'
 gem 'csso-rails'
 gem 'jquery-rails'
-gem 'materialize-sass'
+gem 'materialize-sass', '~> 0.100'
 gem 'material_icons'
 gem 'skim'
 gem 'gon'
 
-gem 'redis', '~> 3.0'
+gem 'redis', '~> 4.0'
 
 gem 'rack-cors'
 
 # Other
 gem 'nenv'
 
-gem 'anycable-rails', "~> 0.5.0", require: false
+gem 'anycable', path: '../anycable', require: false
+gem 'anycable-rails', path: '../anycable-rails'
 
 gem 'tzinfo'
 gem 'tzinfo-data'
@@ -72,5 +73,4 @@ group :test do
   gem 'poltergeist', '~> 1.9'
 
   gem 'rack_session_access'
-  gem 'rspec-page-regression', github: 'teachbase/rspec-page-regression', branch: 'use-imatcher'
 end
