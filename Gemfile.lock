@@ -1,17 +1,3 @@
-PATH
-  remote: ../anycable-rails
-  specs:
-    anycable-rails (0.6.0.alpha)
-      anycable (>= 0.5.0)
-      rails (>= 5)
-
-PATH
-  remote: ../anycable
-  specs:
-    anycable (0.6.0.alpha)
-      anyway_config (~> 1.4.1)
-      grpc (~> 1.15)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -63,6 +49,12 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    anycable (0.6.0.rc1)
+      anyway_config (~> 1.4.1)
+      grpc (~> 1.15)
+    anycable-rails (0.6.0.rc1)
+      anycable (= 0.6.0.rc1)
+      rails (>= 5)
     anyway_config (1.4.1)
     arel (9.0.0)
     ast (2.4.0)
@@ -324,8 +316,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  anycable!
-  anycable-rails!
+  anycable-rails (= 0.6.0.rc1)
   autoprefixer-rails
   better_errors
   binding_of_caller
