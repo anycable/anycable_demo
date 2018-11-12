@@ -1,3 +1,14 @@
+GIT
+  remote: git://github.com/sclinede/blood_contracts.git
+  revision: 70b30f97adde980f136332d73738d0c92bc74381
+  specs:
+    blood_contracts (0.2.1)
+      anyway_config (~> 1.1)
+      dry-initializer (~> 2.0)
+      hashie (~> 3.0)
+      nanoid (~> 0.2)
+      oj (~> 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -120,6 +131,7 @@ GEM
     grpc (1.16.0)
       google-protobuf (~> 3.1)
       googleapis-common-protos-types (~> 1.0.0)
+    hashie (3.6.0)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.1)
@@ -151,10 +163,12 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
+    nanoid (0.2.0)
     nenv (0.3.0)
     nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
+    oj (3.7.1)
     parallel (1.12.1)
     parser (2.5.3.0)
       ast (~> 2.4.0)
@@ -320,6 +334,7 @@ DEPENDENCIES
   autoprefixer-rails
   better_errors
   binding_of_caller
+  blood_contracts!
   capybara
   coffee-rails (~> 4.2.0)
   csso-rails

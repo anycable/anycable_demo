@@ -35,6 +35,8 @@ gem 'yabeda'
 gem 'prometheus-client'
 gem 'yabeda-prometheus'
 
+gem 'blood_contracts', github: 'sclinede/blood_contracts'
+
 gem 'tzinfo'
 gem 'tzinfo-data'
 
