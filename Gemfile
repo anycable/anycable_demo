@@ -28,7 +28,8 @@ gem 'rack-cors'
 # Other
 gem 'nenv'
 
-gem 'anycable-rails', '0.6.0.rc1'
+# gem 'anycable', path: '../anycable'
+gem 'anycable-rails', '~> 0.6.0' #path: '../anycable-rails'
 
 gem 'yabeda'
 

@@ -43,7 +43,7 @@ Yabeda.configure do
     buckets: MetricsMiddleware::BUCKETS
 end
 
-if defined?(::AnyCable::CLI)
+AnyCable.configure_server do
   AnyCable.middleware.use(MetricsMiddleware)
 
   Yabeda::Prometheus::Exporter.start_metrics_server!
