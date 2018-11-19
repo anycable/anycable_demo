@@ -8,7 +8,7 @@ class Product < ApplicationRecord
   belongs_to :basket, counter_cache: :items_count
 
   def serialized(*)
-    { name: "Test:#{name}", category: category, icon_path: icon_path }
+    { name: name, category: category, icon_path: icon_path }
   end
 
   private

@@ -19,7 +19,7 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 
 You can use Docker to run the application with AnyCable server (Go version).
 
-Simply run `docker-compose up` and you'll be able to access the application on `http://localhost:3000`.
+Run `docker-compose up web` and you'll be able to access the application on `http://localhost:3000`.
 
 ## Usage without Docker
 
