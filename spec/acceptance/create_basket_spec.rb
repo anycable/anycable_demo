@@ -8,7 +8,7 @@ feature 'create basket', :js do
     end
 
     scenario 'creates basket' do
-      page.find("#add_basket_btn").trigger('click')
+      page.find("#add_basket_btn").click
 
       within "#basket_form" do
         fill_in 'Name', with: 'Test basket'
@@ -36,7 +36,7 @@ feature 'create basket', :js do
       end
 
       Capybara.using_session(:a) do
-        page.find("#add_basket_btn").trigger('click')
+        page.find("#add_basket_btn").click
 
         within "#basket_form" do
           fill_in 'Name', with: 'Test basket'

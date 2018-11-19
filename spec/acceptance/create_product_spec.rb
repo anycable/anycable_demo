@@ -10,7 +10,7 @@ feature 'create product', :js do
     end
 
     scenario 'creates product' do
-      page.find("#add_product_btn").trigger('click')
+      page.find("#add_product_btn").click
 
       within "#product_form" do
         fill_in 'Name', with: 'Test product'
@@ -35,7 +35,7 @@ feature 'create product', :js do
       end
 
       Capybara.using_session('first') do
-        page.find("#add_product_btn").trigger('click')
+        page.find("#add_product_btn").click
 
         within "#product_form" do
           fill_in 'Name', with: 'Test product'
@@ -67,7 +67,7 @@ feature 'create product', :js do
       end
 
       Capybara.using_session('first') do
-        page.find("#add_product_btn").trigger('click')
+        page.find("#add_product_btn").click
 
         within "#product_form" do
           fill_in 'Name', with: 'Test product'

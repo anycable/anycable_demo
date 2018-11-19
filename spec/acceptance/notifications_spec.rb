@@ -16,17 +16,26 @@ feature 'notifications', :js do
 
     scenario "all users see notifications" do
       ActionCable.server.broadcast "notifications", type: 'alert', data: 'Slow Connection!'
+
+      Capybara.using_session(:a) do
+        expect(page).to have_content 'Slow Connection!'
+      end
+
+      ActionCable.server.broadcast "notifications", type: 'alert', data: 'Slow Connection!'
+
+      Capybara.using_session(:b) do
+        expect(page).to have_content 'Slow Connection!'
+      end
+
       ActionCable.server.broadcast "notifications_john", type: 'success', data: 'Hi, John!'
       ActionCable.server.broadcast "notifications_jack", type: 'success', data: 'Hi, Jack!'
 
       Capybara.using_session(:a) do
-        expect(page).to have_content 'Slow Connection!'
         expect(page).to have_content 'Hi, John!'
         expect(page).not_to have_content 'Hi, Jack!'
       end
 
       Capybara.using_session(:b) do
-        expect(page).to have_content 'Slow Connection!'
         expect(page).to have_content 'Hi, Jack!'
         expect(page).not_to have_content 'Hi, John!'
       end
@@ -42,7 +51,7 @@ feature 'notifications', :js do
     ActionCable.server.broadcast "notifications", type: 'notice', data: 'Bla-bla'
     expect(page).to have_content 'Bla-bla'
 
-    page.find("#notifications_btn").trigger('click')
+    page.find("#notifications_btn").click
 
     ActionCable.server.broadcast "notifications", type: 'notice', data: 'Are you here?'
     ActionCable.server.broadcast "notifications_john", type: 'success', data: 'Come back, John!'
@@ -53,7 +62,7 @@ feature 'notifications', :js do
     # Ensure that the first notification disappeared
     expect(page).not_to have_content 'Welcome, john!'
 
-    page.find("#notifications_btn").trigger('click')
+    page.find("#notifications_btn").click
     expect(page).to have_content 'Welcome, john!'
 
     ActionCable.server.broadcast "notifications", type: 'success', data: 'Hi, John!'

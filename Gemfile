@@ -75,7 +75,8 @@ group :test do
   gem 'zonebie'
   gem 'json_spec'
   gem 'show_me_the_cookies'
-  gem 'poltergeist', '~> 1.9'
+
+  gem 'selenium-webdriver', require: false
 
   gem 'rack_session_access'
 end

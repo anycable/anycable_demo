@@ -12,8 +12,7 @@ feature 'disconnection', :js do
       sign_in('jack')
       visit baskets_path
       expect(page).to have_content "Welcome, jack!"
-
-      page.windows.first.close
+      page.evaluate_script "App.disconnect();"
     end
 
     expect(page).to have_content "jack disconnected"
@@ -28,11 +27,10 @@ feature 'disconnection', :js do
       sign_in('jack')
       visit basket_path(basket)
       expect(page).to have_content "Welcome, jack!"
-
-      page.windows.first.close
+      page.evaluate_script "App.disconnect();"
     end
 
     expect(page).to have_content "jack disconnected"
-    expect(page).to have_content "jack left basket page"
+    expect(page).to have_content "jack left this basket page"
   end
 end

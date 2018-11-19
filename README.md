@@ -13,7 +13,7 @@ With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) al
 - Redis
 - [anycable-go](https://github.com/anycable/anycable-go)
 - [hivemind](https://github.com/DarthSim/hivemind) (optional)
-- PhantomJS (for tests only)
+- Headless Chrome + Chrome Driver (for tests only)
 
 ## Usage with Docker
 
