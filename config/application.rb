@@ -29,6 +29,10 @@ module AnyCableDemo
 
     config.active_record.sqlite3.represent_boolean_as_integer = true
 
+    if ENV["ANYCABLE_RACK"]
+      config.any_cable_rack.run_rpc = true
+    end
+
     # add all upper level assets
     config.assets.precompile +=
     Dir[Rails.root.join('app/assets/*/*.{js,css,coffee,sass,scss}*')]

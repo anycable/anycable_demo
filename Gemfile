@@ -28,8 +28,14 @@ gem 'rack-cors'
 # Other
 gem 'nenv'
 
-# gem 'anycable', path: '../anycable'
-gem 'anycable-rails', '~> 0.6.0' #path: '../anycable-rails'
+if ENV["LOCAL_CABLE"]
+  gem 'anycable', path: '../anycable'
+  gem 'anycable-rails', path: '../anycable-rails'
+else
+  gem 'anycable-rails', '~> 0.6.2'
+end
+
+gem 'anycable-rack-server', require: ENV["ANYCABLE_RACK"] ? "anycable-rack-server" : false
 
 gem 'yabeda'
 

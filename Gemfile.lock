@@ -49,15 +49,17 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    anycable (0.6.0)
-      anyway_config (~> 1.4.1)
-      grpc (~> 1.15)
-    anycable-rails (0.6.1)
+    anycable (0.6.1)
+      anyway_config (~> 1.4.2)
+      grpc (~> 1.17)
+    anycable-rack-server (0.1.0)
+      anycable (~> 0.6)
+      redis (~> 4)
+      websocket (~> 1.2)
+    anycable-rails (0.6.2)
       anycable (~> 0.6.0)
       rails (>= 5)
-    anyway_config (1.4.1)
-    archive-zip (0.11.0)
-      io-like (~> 0.3.0)
+    anyway_config (1.4.2)
     arel (9.0.0)
     ast (2.4.0)
     autoprefixer-rails (9.3.1)
@@ -82,9 +84,6 @@ GEM
       activesupport
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (2.1.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -123,12 +122,11 @@ GEM
     google-protobuf (3.6.1)
     googleapis-common-protos-types (1.0.2)
       google-protobuf (~> 3.0)
-    grpc (1.16.0)
+    grpc (1.17.1)
       google-protobuf (~> 3.1)
       googleapis-common-protos-types (~> 1.0.0)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
-    io-like (0.3.0)
     jaro_winkler (1.5.1)
     jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
@@ -306,6 +304,7 @@ GEM
     uglifier (4.1.19)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.0)
+    websocket (1.2.8)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -323,12 +322,12 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  anycable-rails (~> 0.6.0)
+  anycable-rack-server
+  anycable-rails (~> 0.6.2)
   autoprefixer-rails
   better_errors
   binding_of_caller
   capybara
-  chromedriver-helper
   coffee-rails (~> 4.2.0)
   csso-rails
   database_cleaner
@@ -372,4 +371,4 @@ DEPENDENCIES
   zonebie
 
 BUNDLED WITH
-   1.16.2
+   1.17.1
