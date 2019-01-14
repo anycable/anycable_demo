@@ -7,10 +7,6 @@ class Product < ApplicationRecord
 
   belongs_to :basket, counter_cache: :items_count
 
-  def serialized(*)
-    { name: name, category: category, icon_path: icon_path }
-  end
-
   private
 
   def set_defaults
