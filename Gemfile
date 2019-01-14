@@ -76,6 +76,7 @@ group :test do
   gem 'json_spec'
   gem 'show_me_the_cookies'
 
+  gem 'chromedriver-helper'
   gem 'selenium-webdriver', require: false
 
   gem 'rack_session_access'
