@@ -4,51 +4,62 @@ services:
   app: &app
     build:
       context: .
-      dockerfile: ./Dockerfile
-    image: anycable-demo:0.6.0
-    volumes:
-      - .:/app:cached
+      dockerfile: ./.dockerdev/Dockerfile
+      args:
+        RUBY_VERSION: '2.6.3'
+        PG_MAJOR: '11'
+        NODE_MAJOR: '11'
+        YARN_VERSION: '1.13.0'
+        BUNDLER_VERSION: '2.0.2'
+    image: anycable-demo-dev:1.0.0
     tmpfs:
       - /tmp
+
   backend: &backend
     <<: *app
-    volumes:
-      - .:/app:cached
-      - assets:/app/public/assets
-    environment:
-      - RAILS_ENV=${RAILS_ENV:-development}
-      - REDIS_URL=redis://redis:6379/0
-      - CABLE_URL=ws://localhost:8080/cable
-      - ADAPTER=any_cable
-    depends_on:
-      - redis
-  runner:
-    <<: *backend
     stdin_open: true
     tty: true
+    volumes:
+      - .:/app:cached
+      - rails_cache:/app/tmp/cache
+      - bundle:/bundle
+      - assets:/app/public/assets
+      - .dockerdev/.psqlrc:/root/.psqlrc:ro
+    environment:
+      - NODE_ENV=development
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - REDIS_URL=redis://redis:6379/
+      - CABLE_URL=${CABLE_URL:-ws://localhost:8080/cable}
+      - ADAPTER=${ADAPTER:-any_cable}
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432
+      - BOOTSNAP_CACHE_DIR=/bundle/bootsnap
+      - WEB_CONCURRENCY=1
+      - HISTFILE=/app/log/.bash_history
+      - PSQL_HISTFILE=/app/log/.psql_history
+      - EDITOR=vi
+    depends_on:
+      - postgres
+      - redis
+
+  runner:
+    <<: *backend
     command: /bin/bash
     ports:
       - '3000:3000'
       - '3002:3002'
+
   web:
     <<: *backend
-    command: rails server -b 0.0.0.0
+    command: bundle exec rails server -b 0.0.0.0
     ports:
       - '3000:3000'
-    depends_on:
-      - rpc
-      - ws
+  
   rpc:
     <<: *backend
     command: anycable
-  redis:
-    image: redis:3.2-alpine
-    volumes:
-      - redis:/data
-    ports:
-      - 6379
+  
   ws:
-    image: 'anycable/anycable-go:v0.6.0'
+    image: 'anycable/anycable-go:v0.6.2-mrb'
     ports:
       - "8080:8080"
     environment:
@@ -59,6 +70,27 @@ services:
       - redis
       - rpc
 
-volumes:
+  postgres:
+    image: postgres:11.1
+    volumes:
+      - .dockerdev/.psqlrc:/root/.psqlrc:ro
+      - postgres:/var/lib/postgresql/data
+      - ./log:/root/log:cached
+    environment:
+      - PSQL_HISTFILE=/root/log/.psql_history
+    ports:
+      - 5432
+
   redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
+
+volumes:
+  postgres:
+  redis:
+  bundle:
+  rails_cache:
   assets:

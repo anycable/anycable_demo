@@ -15,7 +15,7 @@
 # production files
 /tmp
 
-*.log
+/log
 *.swp
 
 # ignore assets

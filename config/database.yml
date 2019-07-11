@@ -1,6 +1,7 @@
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
   encoding: unicode
+  url: <%= ENV.fetch('DATABASE_URL') %>
   # user: redspread
   # password: redspread
   # For details on connection pooling, see rails configuration guide
@@ -9,11 +10,11 @@ default: &default
 
 development: &development
   <<: *default
-  database: db/dev.sqlite3
+  database: anycable_demo_dev
 
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: anycable_demo_test
 
 production:
   <<: *development
