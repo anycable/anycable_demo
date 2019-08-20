@@ -36,6 +36,9 @@ services:
       - WEB_CONCURRENCY=1
       - HISTFILE=/app/log/.bash_history
       - PSQL_HISTFILE=/app/log/.psql_history
+      - RAILS_MAX_THREADS=${MAX_THREADS:-10}
+      - SKIP_AUTH=${SKIP_AUTH:-0}
+      - ANYCABLE_RPC_POOL_SIZE=${RPC_POOL_SIZE:-30}
       - EDITOR=vi
     depends_on:
       - postgres
@@ -47,6 +50,7 @@ services:
     ports:
       - '3000:3000'
       - '3002:3002'
+      - '50051:50051'
 
   web:
     <<: *backend
@@ -57,7 +61,21 @@ services:
   rpc:
     <<: *backend
     command: anycable
-  
+    ports:
+      - '50051:50051'
+
+  clustered-rpc-1:
+    <<: *backend
+    command: anycable --rpc-host=0.0.0.0:50060
+    ports:
+      - '50060:50060'
+
+  clustered-rpc-2:
+    <<: *backend
+    command: anycable --rpc-host=0.0.0.0:50061
+    ports:
+      - '50061:50061'
+
   ws:
     image: 'anycable/anycable-go:v0.6.2-mrb'
     ports:
