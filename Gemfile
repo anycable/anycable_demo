@@ -7,7 +7,7 @@ gem 'sqlite3', group: [:development, :test]
 gem 'pg', group: :production
 
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.12'
 
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
