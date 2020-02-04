@@ -7,7 +7,7 @@ require File.expand_path('../config/environment', __dir__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require "faker/food"
 
 Shoulda::Matchers.configure do |config|
@@ -26,7 +26,7 @@ ActiveRecord::Migration.maintain_test_schema!
 Rails.logger = ActionCable.server.config.logger = ActiveRecord::Base.logger = Logger.new(STDOUT) if Nenv.log?
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
     DatabaseCleaner.clean_with :truncation

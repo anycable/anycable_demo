@@ -9,9 +9,9 @@ gem 'pg', group: :production
 # Use Puma as the app server
 gem 'puma', '~> 4.0'
 
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.2.0'
+gem 'coffee-rails'
 gem 'slim-rails'
 gem 'autoprefixer-rails'
 gem 'csso-rails'
@@ -47,7 +47,7 @@ gem 'tzinfo-data'
 
 gem 'active_model_serializers'
 
-gem 'factory_girl_rails', '~> 4.0'
+gem 'factory_bot_rails', '~> 4.0'
 
 gem "faker", "~> 1.8.4"
 
@@ -72,7 +72,7 @@ end
 
 group :test do
   # RSpec tools
-  gem 'rspec-rails', '~> 3.5.0'
+  gem 'rspec-rails', '~> 3.9.0'
   gem "rspec_junit_formatter" # For CircleCI reports
   gem 'capybara'
   gem 'fuubar'
