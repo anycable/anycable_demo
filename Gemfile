@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1'
+gem 'rails', '~> 6.0'
 # Use sqlite3
-gem 'sqlite3', group: [:development, :test]
+gem 'sqlite3', '~> 1.4', group: [:development, :test]
 gem 'pg', group: :production
 
 # Use Puma as the app server
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.0'
 
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -32,7 +32,7 @@ if ENV["LOCAL_CABLE"]
   gem 'anycable', path: '../anycable'
   gem 'anycable-rails', path: '../anycable-rails'
 else
-  gem 'anycable-rails', '~> 0.6.2'
+  gem 'anycable-rails', '~> 0.6.4'
 end
 
 gem 'anycable-rack-server', require: ENV["ANYCABLE_RACK"] ? "anycable-rack-server" : false
