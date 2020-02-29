@@ -182,7 +182,7 @@ GEM
     pry-rails (0.3.7)
       pry (>= 0.10.4)
     public_suffix (3.0.3)
-    puma (3.12.0)
+    puma (3.12.3)
     quantile (0.2.1)
     rack (2.0.6)
     rack-cors (1.0.2)
@@ -353,7 +353,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
-  puma (~> 3.0)
+  puma (~> 3.12)
   rack-cors
   rack_session_access
   rails (~> 5.1)
