@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'acceptance_helper'
 
 feature 'create basket', :js do

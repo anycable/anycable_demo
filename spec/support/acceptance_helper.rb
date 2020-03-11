@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AcceptanceHelper
   def sign_in(name)
     page.set_rack_session(username: name)
@@ -13,7 +15,7 @@ module AcceptanceHelper
   # and wait for specified time (in seconds) until continue spec execution
   #
   # If you specify 0 as 'wait' you should manually resume spec execution.
-  def visit_server(user: nil, wait: 2, path: '/')
+  def visit_server(_user: nil, wait: 2, path: '/')
     url = "http://192.168.60.101:#{Capybara.server_port}"
     url += path
 

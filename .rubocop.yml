@@ -12,9 +12,9 @@ AllCops:
     - 'vendor/**/*'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/TrivialAccessors:
@@ -27,7 +27,7 @@ Style/Documentation:
 Style/StringLiterals: 
   Enabled: false
 
-Style/SpaceInsideStringInterpolation:
+Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
 
 Style/BlockDelimiters:
@@ -43,6 +43,10 @@ Metrics/MethodLength:
 
 Metrics/LineLength:
   Max: 100
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
 

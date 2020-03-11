@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_context "background_processes" do
   before(:all) do
     rout, wout = IO.pipe
