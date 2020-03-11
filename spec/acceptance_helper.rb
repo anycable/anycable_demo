@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 require "capybara/rspec"
 require "selenium-webdriver"
@@ -22,7 +24,7 @@ RSpec.configure do |config|
   Capybara.raise_server_errors = true
 
   # See https://github.com/GoogleChrome/puppeteer/issues/1645#issuecomment-356060348
-  CHROME_OPTIONS = %w(
+  CHROME_OPTIONS = %w[
     --no-sandbox
     --disable-background-networking
     --disable-default-apps
@@ -40,7 +42,7 @@ RSpec.configure do |config|
     --ignore-ssl-errors
     --ignore-certificate-errors-spki-list
     --user-data-dir=/tmp
-  ).freeze
+  ].freeze
 
   Capybara.register_driver :selenium_chrome do |app|
     driver =

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :rpc do
   desc "Make test GRPC call"
   task check: :environment do

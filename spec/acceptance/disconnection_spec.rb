@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'acceptance_helper'
 
 feature 'disconnection', :js do
