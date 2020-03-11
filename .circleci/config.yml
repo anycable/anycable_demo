@@ -1,0 +1,117 @@
+version: 2.1
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - checkout_code
+      - bundle_install:
+          requires:
+            - checkout_code
+      - rspec:
+          requires:
+            - bundle_install
+      - rubocop:
+          requires:
+            - bundle_install
+
+executors:
+  ruby:
+    docker:
+    - image: circleci/ruby:2.5.7-node-browsers
+      environment:
+        BUNDLE_PATH: vendor/bundle
+        GEM_HOME: vendor/bundle
+        RAILS_ENV: test
+
+jobs:
+  checkout_code:
+    executor: ruby
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - anycable_demo-source-v1-{{ .Branch }}-{{ .Revision }}
+            - anycable_demo-source-v1-{{ .Branch }}
+            - anycable_demo-source-v1
+      - checkout
+      - save_cache:
+          key: anycable_demo-source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run:
+          name: "Drop git directory to save some space"
+          command: "rm -rf .git/"
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  bundle_install:
+    executor: ruby
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - anycable_demo-bundle-2.5-{{ checksum "Gemfile.lock" }}
+            - anycable_demo-bundle-2.5
+      - run:
+          name: Install bundler version from Gemfile
+          command: |
+            export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
+            gem install bundler:$BUNDLER_VERSION --no-document --conservative --minimal-deps
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - run:
+          name: Clean stale gems
+          command: |
+            bundle clean --force
+            rm -rf $BUNDLE_PATH/cache/*
+      - save_cache:
+          key: anycable_demo-bundle-2.5-{{ checksum "Gemfile.lock" }}
+          paths: vendor/bundle
+      - persist_to_workspace:
+          root: .
+          paths: vendor/bundle
+
+  rspec:
+    executor: ruby
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Install hivemind
+          command: |
+            mkdir -p $HOME/.local/bin/
+            curl -sSL https://github.com/DarthSim/hivemind/releases/download/v1.0.6/hivemind-v1.0.6-linux-amd64.gz -o $HOME/.local/bin/hivemind.gz
+            gunzip $HOME/.local/bin/hivemind.gz
+            chmod +x $HOME/.local/bin/hivemind
+
+      - run:
+          name: Run specs
+          command: |
+            bundle exec rspec \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress
+
+      - store_test_results:
+          path: /tmp/test-results
+
+  rubocop:
+    executor: ruby
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          command: |
+            bundle exec rubocop

@@ -73,6 +73,7 @@ end
 group :test do
   # RSpec tools
   gem 'rspec-rails', '~> 3.5.0'
+  gem "rspec_junit_formatter" # For CircleCI reports
   gem 'capybara'
   gem 'fuubar'
   gem 'database_cleaner'
