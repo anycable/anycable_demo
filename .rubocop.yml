@@ -9,6 +9,7 @@ AllCops:
     - 'spec/dummy/**/*'
     - 'tmp/**/*'
     - 'bench/**/*'
+    - 'vendor/**/*'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
   TargetRubyVersion: 2.3
