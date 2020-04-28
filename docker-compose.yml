@@ -1,52 +1,66 @@
-version: '3.4'
+version: '2.4'
+
+x-app-service-template: &app
+  image: anycable-demo:0.6.0
+  build:
+    context: .
+    dockerfile: .dockerdev/Dockerfile
+    args:
+      RUBY_VERSION: "2.5.7"
+      NODE_MAJOR: '12'
+      BUNDLER_VERSION: '1.17.1'
+      HIVEMIND_VERSION: '1.0.6'
+  tmpfs:
+    - /tmp
+  environment: &env
+    NODE_ENV: development
+    RAILS_ENV: ${RAILS_ENV:-development}
+
+x-backend: &backend
+  <<: *app
+  volumes:
+    - .:/app:cached
+    - rails_cache:/app/tmp/cache
+    - bundle:/usr/local/bundle
+  tmpfs:
+    - /app/tmp/pids
+  environment:
+    <<: *env
+    REDIS_URL: redis://redis:6379/
+    WEB_CONCURRENCY: 1
+    HISTFILE: /app/tmp/cache/.bash_history
+    EDITOR: vi
+    CABLE_URL: ws://localhost:8080/cable
+    ADAPTER: any_cable
+  stdin_open: true
+  tty: true
+  depends_on:
+    redis:
+      condition: service_healthy
 
 services:
-  app: &app
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    image: anycable-demo:0.6.4
-    volumes:
-      - .:/app:cached
-    tmpfs:
-      - /tmp
-  backend: &backend
-    <<: *app
-    volumes:
-      - .:/app:cached
-      - assets:/app/public/assets
-    environment:
-      - RAILS_ENV=${RAILS_ENV:-development}
-      - REDIS_URL=redis://redis:6379/0
-      - CABLE_URL=ws://localhost:8080/cable
-      - ADAPTER=any_cable
-    depends_on:
-      - redis
-  runner:
-    <<: *backend
-    stdin_open: true
-    tty: true
-    command: /bin/bash
-    ports:
-      - '3000:3000'
-      - '3002:3002'
   web:
     <<: *backend
-    command: rails server -b 0.0.0.0
+    command: bundle exec rails server -b 0.0.0.0
     ports:
       - '3000:3000'
-    depends_on:
-      - rpc
-      - ws
+
   rpc:
     <<: *backend
-    command: anycable
+    command: bundle exec anycable
+
   redis:
     image: redis:5.0-alpine
     volumes:
       - redis:/data
     ports:
       - 6379
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
   ws:
     image: 'anycable/anycable-go:v0.6.4'
     ports:
@@ -61,4 +75,6 @@ services:
 
 volumes:
   redis:
+  bundle:
   assets:
+  rails_cache:
