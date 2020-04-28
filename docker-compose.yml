@@ -23,6 +23,8 @@ x-backend: &backend
     - .:/app:cached
     - rails_cache:/app/tmp/cache
     - bundle:/usr/local/bundle
+    - .dockerdev/.pryrc:/root/.pryrc:ro
+    - .dockerdev/.bashrc:/root/.bashrc:ro
   tmpfs:
     - /app/tmp/pids
   environment:
