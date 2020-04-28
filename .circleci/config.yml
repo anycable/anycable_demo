@@ -8,9 +8,9 @@ workflows:
       - bundle_install:
           requires:
             - checkout_code
-      - rspec:
-          requires:
-            - bundle_install
+      # - rspec:
+      #     requires:
+      #       - bundle_install
       - rubocop:
           requires:
             - bundle_install

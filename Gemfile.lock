@@ -63,15 +63,11 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    anycable (0.6.5)
+    anycable (1.0.0.preview2)
       anyway_config (>= 1.4.2)
       grpc (~> 1.17)
-    anycable-rack-server (0.1.0)
-      anycable (~> 0.6)
-      redis (~> 4)
-      websocket (~> 1.2)
-    anycable-rails (0.6.5)
-      anycable (~> 0.6.0)
+    anycable-rails (1.0.0.preview2)
+      anycable (~> 1.0.0.preview2)
       rails (>= 5)
     anyway_config (2.0.2)
       ruby-next-core (>= 0.5.1)
@@ -196,7 +192,6 @@ GEM
     public_suffix (4.0.4)
     puma (4.3.3)
       nio4r (~> 2.0)
-    quantile (0.2.1)
     rack (2.2.2)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
@@ -333,7 +328,6 @@ GEM
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.7.0)
-    websocket (1.2.8)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
@@ -353,8 +347,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  anycable-rack-server
-  anycable-rails (~> 0.6.4)
+  anycable-rails (= 1.0.0.preview2)
   autoprefixer-rails
   better_errors
   binding_of_caller

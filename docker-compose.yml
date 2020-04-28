@@ -1,20 +1,21 @@
 version: '2.4'
 
 x-app-service-template: &app
-  image: anycable-demo:0.6.0
+  image: anycable-demo:0.6.6
   build:
     context: .
     dockerfile: .dockerdev/Dockerfile
     args:
-      RUBY_VERSION: "2.5.7"
+      RUBY_VERSION: "2.6.5"
       NODE_MAJOR: '12'
       BUNDLER_VERSION: '1.17.1'
-      HIVEMIND_VERSION: '1.0.6'
   tmpfs:
     - /tmp
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
+    ANYCABLE_DEBUG: ${DEBUG:-0}
+    ANYCABLE_RPC_HOST: 0.0.0.0:50051
 
 x-backend: &backend
   <<: *app
@@ -61,14 +62,16 @@ services:
       timeout: 3s
       retries: 30
 
-  ws:
-    image: 'anycable/anycable-go:v0.6.4'
+  anycable:
+    image: 'anycable/anycable-go:1.0.0.preview1'
     ports:
       - "8080:8080"
     environment:
-      - PORT=8080
-      - REDIS_URL=redis://redis:6379/0
-      - ANYCABLE_RPC_HOST=rpc:50051
+      PORT: 8080
+      ANYCABLE_HOST: 0.0.0.0
+      REDIS_URL: redis://redis:6379/0
+      ANYCABLE_RPC_HOST: rpc:50051
+      ANYCABLE_DEBUG: ${DEBUG:-0}
     depends_on:
       - redis
       - rpc

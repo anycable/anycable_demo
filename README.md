@@ -1,66 +1,50 @@
 # AnyCable Demo
 
-Sample application demonstrating AnyCable concept.
+**NOTE:** This demo app is under reconstruction 🚑. The only working local setup is the [Docker one](#docker-development-environment).
+Feel free to skip the rest of the readme. We're working on a new shiny version. Stay tuned!
 
-AnyCable allows you to use any WebSocket server (written in any language) as a replacement for built-in Ruby Action Cable server.
+## Docker development environment
 
-With AnyCable you can use channels, client-side JS, broadcasting - (_almost_) all that you can do with Action Cable. You can even use Action Cable in development and not be afraid of compatibility issues.
+### Requirements
 
-## Requirements
+- `docker` and `docker-compose` installed.
 
-- Ruby ~> 2.4
-- PostgreSQL >= 9.4
-- Redis
-- [anycable-go](https://github.com/anycable/anycable-go)
-- [hivemind](https://github.com/DarthSim/hivemind) (optional)
-- Headless Chrome + Chrome Driver (for tests only)
+For MacOS just use [official app](https://docs.docker.com/engine/installation/mac/).
 
-## Usage with Docker
+- [`dip`](https://github.com/bibendi/dip) installed.
 
-You can use Docker to run the application with AnyCable server (Go version).
-
-Run `docker-compose up web` and you'll be able to access the application on `http://localhost:3000`.
-
-## Usage without Docker
-
-To launch AnyCable version:
+You can install `dip` either as Ruby gem:
 
 ```sh
-# Run dev servers
-hivemind Procfile.dev
-
-# Run specs
-make test
+gem install dip
 ```
 
-This runs 3 processes:
-- Rails Web app
-- Rails RPC server ([GRPC](http://www.grpc.io))
-- Go Websockets server
-
-To launch AnyCable version with [ErlyCable](https://github.com/anycable/erlycable) you should set `ERLYCABLE_DIR` env variable first (or provide when running commands) pointing to ErlyCable repo path (i.e. `/my/path/to/erlycable`).
-
-ErlyCable also requires [Erlang](http://www.erlang.org) >=18.0 and [rebar3](https://www.rebar3.org).
+Or using Homebrew:
 
 ```sh
-# Run dev server
-hivemind Procfile.erly
-
-# Run specs
-make test-erl
+brew tap bibendi/dip
+brew install dip
 ```
 
-This runs 3 processes:
-- Rails Web app
-- Rails RPC server ([GRPC](http://www.grpc.io))
-- ErlyCable server (as `rebar3 shell`)
-
-To launch _plain_ Rails version:
+Or by downloading a binary (see [releases](https://github.com/bibendi/dip/releases)):
 
 ```sh
-# Run dev server
-bundle exec rails server
-
-# Run specs
-bundle exec rspec
+curl -L https://github.com/bibendi/dip/releases/download/v5.0.0/dip-`uname -s`-`uname -m` > /usr/local/bin/dip
+chmod +x /usr/local/bin/dip
 ```
+
+### Usage
+
+First, run the following command to build images and provision the application:
+
+```sh
+dip provision
+```
+
+Then, you can start Rails server alongside with AnyCable RPC and WebSocket server by running:
+
+```sh
+dip up web
+```
+
+Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.

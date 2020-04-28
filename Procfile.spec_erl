@@ -1,2 +1,0 @@
-rpc: ADAPTER=any_cable bundle exec anycable
-erlang: sleep 5 && (cd $ERLYCABLE_DIR && rebar3 shell)

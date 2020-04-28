@@ -57,3 +57,5 @@ provision:
   - dip compose down --volumes
   - dip compose up -d redis
   - dip bundle install
+  - dip rails db:prepare
+  - dip rails db:seed
