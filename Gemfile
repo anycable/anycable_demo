@@ -32,10 +32,11 @@ if ENV["LOCAL_CABLE"]
   gem 'anycable', path: '../anycable'
   gem 'anycable-rails', path: '../anycable-rails'
 else
-  gem 'anycable-rails', '~> 0.6.4'
+  gem 'anycable-rails', '1.0.0.preview2'
 end
 
-gem 'anycable-rack-server', require: ENV["ANYCABLE_RACK"] ? "anycable-rack-server" : false
+# Not support by 1.0.0 yet
+# gem 'anycable-rack-server', require: ENV["ANYCABLE_RACK"] ? "anycable-rack-server" : false
 
 gem 'yabeda'
 
