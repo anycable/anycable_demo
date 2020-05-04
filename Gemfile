@@ -32,6 +32,7 @@ if ENV["LOCAL_CABLE"]
   gem 'anycable', path: '../anycable'
   gem 'anycable-rails', path: '../anycable-rails'
 else
+  gem 'anycable', github: 'anycable/anycable', branch: '1.0-dev'
   gem 'anycable-rails', '1.0.0.preview2'
 end
 
