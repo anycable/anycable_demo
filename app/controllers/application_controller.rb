@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   include Serialized
 
   def current_user
-    @current_user ||= (session[:username] || cookies[:username])
+    @current_user ||= (session[:username] || cookies.encrypted[:username])
   end
 
   def logged_in?

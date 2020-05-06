@@ -17,7 +17,7 @@ module ApplicationCable
     private
 
     def verify_user
-      cookies[:username].presence || reject_unauthorized_connection
+      cookies.encrypted[:username].presence || reject_unauthorized_connection
     end
   end
 end
