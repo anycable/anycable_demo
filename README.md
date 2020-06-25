@@ -1,7 +1,6 @@
 # AnyCable Demo
 
-**NOTE:** This demo app is under reconstruction 🚑. The only working local setup is the [Docker one](#docker-development-environment).
-Feel free to skip the rest of the readme. We're working on a new shiny version. Stay tuned!
+**NOTE:** This demo application is no longer maintained. Please, refer to a new [AnyCable Rails Demo](https://github.com/anycable/anycable_rails_demo).
 
 ## Docker development environment
 
