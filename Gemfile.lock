@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/anycable/anycable.git
+  revision: 99ad5b7a3aa0d4d078a4ff0fab6b96b01aee6cfa
+  branch: 1.0-dev
+  specs:
+    anycable (1.0.0.preview2)
+      anyway_config (>= 1.4.2)
+      grpc (~> 1.17)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -63,9 +72,6 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    anycable (1.0.0.preview2)
-      anyway_config (>= 1.4.2)
-      grpc (~> 1.17)
     anycable-rails (1.0.0.preview2)
       anycable (~> 1.0.0.preview2)
       rails (>= 5)
@@ -347,6 +353,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  anycable!
   anycable-rails (= 1.0.0.preview2)
   autoprefixer-rails
   better_errors

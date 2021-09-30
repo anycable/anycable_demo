@@ -16,6 +16,7 @@ x-app-service-template: &app
     RAILS_ENV: ${RAILS_ENV:-development}
     ANYCABLE_DEBUG: ${DEBUG:-0}
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
+    ANYCABLE_REDIS_SENTINELS: redis-sentinel:26379
 
 x-backend: &backend
   <<: *app
@@ -64,19 +65,50 @@ services:
       timeout: 3s
       retries: 30
 
+  redis-slave:
+    image: redis:5.0-alpine
+    command: redis-server --slaveof redis 6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - redis:/data
+
+  redis-sentinel: &redis-sentinel
+    image: redis:5.0-alpine
+    volumes:
+      - ./.dockerdev/redis-sentinel:/redis
+    working_dir: /redis
+    entrypoint: ./entrypoint.sh
+    environment:
+      SENTINEL_QUORUM: 2
+      SENTINEL_DOWN_AFTER: 1000
+      SENTINEL_FAILOVER: 1000
+      SENTINEL_MASTER: redis
+    ports:
+      - 26379
+    depends_on:
+      redis:
+        condition: service_started
+      redis-slave:
+        condition: service_started
+
   anycable:
     image: 'anycable/anycable-go:1.0.0.preview1'
     ports:
       - "8080:8080"
+    volumes:
+      - ./bin/:/usr/local/bin
     environment:
       PORT: 8080
       ANYCABLE_HOST: 0.0.0.0
       REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: rpc:50051
       ANYCABLE_DEBUG: ${DEBUG:-0}
+      ANYCABLE_REDIS_SENTINELS: redis-sentinel:26379
+      ANYCABLE_REDIS_SENTINEL_DISCOVERY_INTERVAL: 2
     depends_on:
       - redis
-      - rpc
 
 volumes:
   redis:
